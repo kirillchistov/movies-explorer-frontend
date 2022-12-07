@@ -3,26 +3,26 @@
     gap: 10px;
     justify-content: flex-end;
     align-items: center;
-  }
+}
   
-  .signup__link {
-    padding: 8px 20px;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 16px;
-    border: none;
-    border-radius: 3px;
-    background: none;
-  }
+.signup__link {
+  padding: 8px 20px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  border: none;
+  border-radius: 3px;
+  background: none;
+}
   
-  .signup__link_active {
-    background-color: var(--color-green);
-  }
+.signup__link_active {
+  background-color: var(--color-green);
+}
   
-  @media screen and (max-width: 920px) {
+@media screen and (max-width: 920px) {
   
-  }
+}
   
-  @media screen and (max-width: 620px) {
-  }
-  
+@media screen and (max-width: 620px) {
+
+}

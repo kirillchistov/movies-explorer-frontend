@@ -1,7 +1,7 @@
 //  Главный API ЛК - авторизация, работа с профилем и коллекцией фильмов  //
 //  Проверка ответа сервера, создание токена, редактирование профиля, коллекции фильмов  //
 
-import { BASEURL } from './const.js';
+import { BASEURL } from './constants.js';
 
 class MainApi {
   constructor(options) {

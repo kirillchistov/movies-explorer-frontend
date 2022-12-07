@@ -6,7 +6,7 @@ import './Techs.css';
 
 function Techs() {
   return (
-    <SectionBlock type={'grey'} link={'tech'}>
+    <SectionBlock type={'grey'} link={'techs'}>
       <Title title={'Технологии'} />
       <TechContent />
     </SectionBlock>

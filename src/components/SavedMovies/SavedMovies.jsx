@@ -10,7 +10,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Footer from '../Footer/Footer';
 
-import { SHORTTIME } from '../../utils/const';
+import { SHORTTIME } from '../../utils/constants';
 
 function SavedMovies({
   requestSearchError,

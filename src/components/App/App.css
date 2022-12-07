@@ -1,6 +1,4 @@
-/* Общие стили страницы*/
 :root {
-  /* переменные цвета */
   --color-white: #fff;
   --color-black: #000;
   --color-grey: #f5f5f5;
@@ -21,16 +19,12 @@
   font-family: "Inter", Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
-  /* сглаживание, масштаб и рендеринг шрифта */
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
-  /* минимальная и максимальная ширина страницы */
-  /* width: 100%; */
-  /* центрирование */
 }
 
 .link {
@@ -39,14 +33,11 @@
   opacity: 1;
   transition: opacity 0.5s;
   outline-offset: 5px;
-  /* transition: border 0.4s ease-in-out; */
-  /* border: 1px solid var(--color-grey); */
 }
 
 .link:hover {
   opacity: 0.5;
   cursor: pointer;
-  /* border: 1px solid var(--color-green); */
 }
 
 .button {

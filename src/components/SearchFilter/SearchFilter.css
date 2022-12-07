@@ -1,0 +1,24 @@
+.search__filter {
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  grid-area: filter;
+  border-top-right-radius: 9px;
+  border-bottom-right-radius: 9px;
+  background-color: var(--color-grey);
+}
+  
+@media screen and (max-width: 920px) {
+  .search__filter {
+    padding: 0 20px;
+  }
+}
+  
+@media screen and (max-width: 620px) {
+  .search__filter {
+    padding: 46px 0;
+    justify-content: center;
+    background: none;
+  }
+}
+  

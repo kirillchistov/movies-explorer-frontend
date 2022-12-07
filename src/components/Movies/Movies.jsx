@@ -11,7 +11,7 @@ import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Footer from '../Footer/Footer';
 import Preloader from '../Preloader/Preloader';
 
-import { SHORTTIME } from '../../utils/const';
+import { SHORTTIME } from '../../utils/constants';
 
 function Movies({
   onBookmark,

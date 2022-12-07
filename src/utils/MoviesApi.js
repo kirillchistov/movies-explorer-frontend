@@ -1,7 +1,7 @@
 //  API для получения фильмов с сервера Я  //
 //  Проверка ответа сервера, получение коллекции фильмов  //
 
-import { MOVIESURL } from './const.js';
+import { MOVIESURL } from './constants.js';
 
 class MoviesApi {
   constructor(options) {
