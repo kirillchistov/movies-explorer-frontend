@@ -1,0 +1,142 @@
+.profile {
+    max-width: 410px;
+    height: calc(100vh - 144px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile__title {
+    margin: 0;
+    padding-bottom: 120px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+  }
+  
+  .profile__form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .profile__list {
+    width: 100%;
+    padding-bottom: 210px;
+  }
+  
+  .profile__item {
+    margin: 0;
+    padding: 8px 0 8px;
+    display: grid;
+    flex-direction: row;
+    grid-template-columns: 140px 1fr;
+    grid-auto-flow: column;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    line-height: 13px;
+    border-bottom: 1px solid var(--color-darkgrey);
+  }
+  
+  .profile__item:last-child {
+    border: none;
+  }
+  
+  .profile__caption {
+    font-weight: 500;
+  }
+  
+  .profile__input {
+    padding: 8px 0 8px;
+    font-weight: 400;
+    border: none;
+    text-align: end;
+  }
+  
+  .profile__button {
+    font-size: 14px;
+    line-height: 17px;
+  }
+  
+  .profile__button_edit {
+    padding: 14px 0;
+    font-weight: 400;
+  }
+  
+  .profile__button_submit {
+    width: 100%;
+    padding: 14px 0;
+    color: var(--color-white);
+    background-color: var(--color-orange);
+    border-radius: 3px;
+    border: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;  
+  }
+  
+  .profile__button:disabled {
+    color: var(--color-ground);
+    background-color: var(--color-grey);
+  }
+  
+  .profile__button_signout {
+    font-weight: 500;
+    color: var(--color-red);
+  }
+  
+  .profile__submit {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile__input:focus {
+    border-bottom: 1px solid var(--color-orange);
+  }
+  
+  .profile__input_active {
+    color: var(--color-red);
+  }
+  
+  .profile__input_error {
+    padding-top: 5px;
+    display: none;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: var(--color-red);
+  }
+  
+  .profile__error {
+    display: none;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: var(--color-red);
+  }
+  
+  .profile__error_active {
+    display: flex;
+  }
+  
+  @media screen and (max-width: 920px) {
+    .profile__title {
+      padding-bottom: 96px;
+    }
+  }
+  
+  @media screen and (max-width: 620px) {
+    .profile {
+      max-width: 260px;
+    }
+  }
+  

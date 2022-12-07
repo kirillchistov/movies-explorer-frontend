@@ -1,0 +1,64 @@
+/* Общие стили страницы*/
+:root {
+  /* переменные цвета */
+  --color-white: #fff;
+  --color-black: #000;
+  --color-grey: #f5f5f5;
+  --color-darkgrey: #e8e8e8;
+  --color-ground: #a0a0a0;
+  --color-red: #ee3465;
+  --color-orange: #ff6838;
+  --color-green: #2be080;
+  background-color: var(--color-white);
+}
+
+.page {
+  min-width: 320px;
+  max-width: 1280px;
+  margin: 0 auto;
+  color: var(--color-black);
+  box-sizing: border-box;
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  /* сглаживание, масштаб и рендеринг шрифта */
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  /* минимальная и максимальная ширина страницы */
+  /* width: 100%; */
+  /* центрирование */
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-black);
+  opacity: 1;
+  transition: opacity 0.5s;
+  outline-offset: 5px;
+  /* transition: border 0.4s ease-in-out; */
+  /* border: 1px solid var(--color-grey); */
+}
+
+.link:hover {
+  opacity: 0.5;
+  cursor: pointer;
+  /* border: 1px solid var(--color-green); */
+}
+
+.button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.hidden {
+  display: none;
+}

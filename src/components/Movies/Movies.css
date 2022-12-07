@@ -1,0 +1,20 @@
+.movies {
+    padding: 70px;
+  }
+  
+  .search__error {
+    text-align: center;
+  }
+  
+  @media screen and (max-width: 920px) {
+    .movies {
+      padding: 70px 30px;
+    }
+  }
+  
+  @media screen and (max-width: 767px) {
+    .movies {
+      padding: 40px 10px;
+    }
+  }
+  
