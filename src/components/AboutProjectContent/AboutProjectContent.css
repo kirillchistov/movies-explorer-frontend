@@ -58,7 +58,8 @@
 }
   
 .steps__duration_active {
-  background-color: var(--color-green);
+  color: #fff;
+  background-color: var(--color-black);
 }
   
 .steps__name {

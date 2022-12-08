@@ -1,29 +1,29 @@
 //  Компонент профиля  //
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 
 import Header from '../Header/Header';
 import './Profile.css';
 
-function Profile({
-  isLoggedIn,
+const Profile = ({
+  loggedIn,
   onSignOut,
   onUpdateProfile,
   requestEditProfileError,
-}) {
-  const currentUser = React.useContext(CurrentUserContext);
+}) => {
+  const currentUser = useContext(CurrentUserContext);
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation('');
 
-  const [isInputDisabled, setIsInputDisabled] = React.useState(true);
-  const [isSubmitDisabled, setIsSubmitDisabled] = React.useState(true);
+  const [isInputDisabled, setIsInputDisabled] = useState(true);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-  const [isEdit, setIsEdit] = React.useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
-  const [isRequestError, setIsRequestError] = React.useState(false);
-  const [messageRequestError, setMesageRequestError] = React.useState('');
+  const [isRequestError, setIsRequestError] = useState(false);
+  const [messageRequestError, setMesageRequestError] = useState('');
 
-  function handleEditProfile() {
+  const handleEditProfile = () => {
     resetForm(currentUser, {}, false);
     setIsRequestError(false);
     setMesageRequestError('');
@@ -31,15 +31,12 @@ function Profile({
     setIsEdit(!isEdit);
   }
 
-  function handleSubmit(evt) {
-    // Запрещаем браузеру переходить по адресу формы
+  const handleSubmit = (evt) => {
     evt.preventDefault();
-    // очищаю ошибку и блокирую поля ввода
     setIsRequestError(false);
     setMesageRequestError('');
     setIsInputDisabled(true);
     setIsSubmitDisabled(true);
-    // Передаём значения управляемых компонентов во внешний обработчик
     const newValues = {
       name: values.name === undefined ? currentUser.name : values.name,
       email: values.email === undefined ? currentUser.email : values.email,
@@ -49,7 +46,7 @@ function Profile({
     resetForm(newValues, {}, false);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsSubmitDisabled(
       isValid &&
         (values.name !== currentUser.name ||
@@ -57,19 +54,19 @@ function Profile({
     );
   }, [values.name, values.email, isValid, currentUser.name, currentUser.email]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsRequestError(requestEditProfileError.isRequestError);
     setMesageRequestError(requestEditProfileError.messageRequestError);
   }, [requestEditProfileError]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsRequestError(false);
     setMesageRequestError('');
   }, []);
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header loggedIn={loggedIn} />
       <section className='profile'>
         <h2 className='profile__title'>{`Привет, ${currentUser.name}!`}</h2>
         <form className='profile__form' name='profile' onSubmit={handleSubmit}>

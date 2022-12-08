@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 
 import './NotFound.css';
 
-function NotFound() {
+const NotFound = () => {
   const history = useHistory();
 
-  function goBack () {
+  const goBack = () => {
     history.go(-2);
   }
 

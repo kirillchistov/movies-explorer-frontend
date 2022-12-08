@@ -14,9 +14,22 @@
   border-radius: 3px;
   background: none;
 }
-  
-.signup__link_active {
-  background-color: var(--color-green);
+
+.signin__link {
+  padding: 8px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  border: none;
+  border-radius: 3px;
+  background: none;
+}
+
+.signin__link_active {
+  color: var(--color-white);
+  background-color: var(--color-black);
 }
   
 @media screen and (max-width: 920px) {

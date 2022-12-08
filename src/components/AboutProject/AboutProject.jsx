@@ -1,9 +1,9 @@
-//  Компонент для секции "О проекте"  //
+//  AboutProject — компонент с описанием дипломного проекта  //
 import Title from '../Title/Title';
 import SectionBlock from '../SectionBlock/SectionBlock';
 import AboutProjectContent from '../AboutProjectContent/AboutProjectContent';
 
-function AboutProject() {
+const AboutProject = () => {
   return (
     <SectionBlock type={'white'} link={'aboutproject'}>
       <Title title={'О проекте'}/>

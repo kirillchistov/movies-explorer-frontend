@@ -1,5 +1,5 @@
 //  Компонент с загловком блока  //
-function Title({title}) {
+const Title = ({title}) => {
   return (
     <h2 className="section-block__title">{title}</h2>
   );

@@ -2,7 +2,7 @@
 import './AboutMeContent.css';
 import aboutmeimage from '../../images/aboutme.jpg';
 
-function AboutMeContent() {
+const AboutMeContent = () => {
   return (
     <div className='aboutme'>
       <div className='aboutme__description'>

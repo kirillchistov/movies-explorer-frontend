@@ -1,7 +1,7 @@
 //  Компонент с внутренним содержанием блока "О проекте"  //
 import './AboutProjectContent.css';
 
-function AboutProjectContent() {
+const AboutProjectContent = () => {
   return (
     <>
       <div className='project'>

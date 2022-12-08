@@ -3,7 +3,7 @@ import logo from '../../images/headerlogo.svg';
 import { Link } from 'react-router-dom';
 import './AuthHeader.css';
 
-function AuthHeader({ title }) {
+const AuthHeader = ({ title }) => {
   return (
     <header className='auth-header'>
       <Link to='/'>

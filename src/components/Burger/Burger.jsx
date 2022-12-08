@@ -1,7 +1,7 @@
 //  Комонент мобильного меню  //
 import './Burger.css';
 
-function Burger({ isOpen, onClick }) {
+const Burger = ({ isOpen, onClick }) => {
   return (
     <button
       className={

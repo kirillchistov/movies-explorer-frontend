@@ -1,21 +1,21 @@
 //  Компонент с формой регистрации  //
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Register.css';
 import AuthForm from '../AuthForm/AuthForm';
 import AuthHeader from '../AuthHeader/AuthHeader';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 
-function Register({ onSignUp, requestSignUpError }) {
+const Register = ({ onSignUp, requestSignUpError }) => {
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
   const isDisabled = !isValid;
 
-  function handleSubmit(evt) {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     // Передаём значения управляемых компонентов во внешний обработчик
     onSignUp(values);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     resetForm({}, {}, false);
   }, [resetForm]);
 

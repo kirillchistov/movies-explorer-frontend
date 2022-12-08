@@ -4,10 +4,10 @@ import { useLocation } from 'react-router-dom';
 
 import './MoviesCard.css';
 
-function MoviesCard({ onBookmark, onCheckBookmark, removeSavedMovies, card }) {
+const MoviesCard = ({ onBookmark, onCheckBookmark, removeSavedMovies, card }) => {
   const location = useLocation();
 
-  function handleClick() {
+  const handleClick = () => {
     if (allMoviesPage) {
       onBookmark({ ...card, image: imageSource, thumbnail: imageSource });
     }
@@ -30,7 +30,7 @@ function MoviesCard({ onBookmark, onCheckBookmark, removeSavedMovies, card }) {
     : card.image;
 
   // длительность фильма в формат чч:мм
-  function time() {
+  const time = () => {
     const hours = Math.floor(card.duration / 60);
     const minutes = card.duration % 60;
     return `${hours}ч ${minutes}м`;

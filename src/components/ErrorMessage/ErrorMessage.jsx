@@ -1,12 +1,12 @@
 //  Компонент для динамической подстановки сообщений об ошибках  //
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './ErrorMessage.css';
 
-function ErrorMessage({ requestSearchError }) {
-  const [isRequestError, setIsRequestError] = React.useState(false);
-  const [messageRequestError, setMesageRequestError] = React.useState('');
+const ErrorMessage = ({ requestSearchError }) => {
+  const [isRequestError, setIsRequestError] = useState(false);
+  const [messageRequestError, setMesageRequestError] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsRequestError(requestSearchError.isRequestError);
     setMesageRequestError(requestSearchError.messageRequestError);
   }, [requestSearchError]);

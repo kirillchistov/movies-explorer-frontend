@@ -1,7 +1,7 @@
 //  Компонент подвала  //
 import './Footer.css';
 
-function Footer() {
+const Footer = () => {
   return (
     <footer className='footer'>
       <h3 className='footer__title'>

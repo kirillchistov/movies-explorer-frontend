@@ -2,7 +2,7 @@
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
 
-function Navigation({type}) {
+const Navigation = ({type}) => {
   const navigationClassName = type==='row' ? `navigation__item navigation__item_row link` : `navigation__item navigation__item_column link`
 
   return (

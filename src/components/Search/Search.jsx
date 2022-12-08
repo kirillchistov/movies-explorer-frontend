@@ -1,28 +1,28 @@
-//  Компонент с формой поиска  //
-import React from 'react';
+//  Компонент с формой поиска и фильтром по короткометражкам  //
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import SearchForm from '../SearchForm/SearchForm';
-import SearchFilter from '../SearchFilter/SearchFilter';
+import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
 import './Search.css';
 
-function Search({ searchMovie, onIsShort, isShort }) {
+const Search = ({ searchMovie, onIsShort, isShort }) => {
   const location = useLocation();
-  const [searchText, setSearchText] = React.useState('');
+  const [searchText, setSearchText] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     setSearchText('');
     location.pathname === '/movies' && localStorage.getItem('searchText') && setSearchText(localStorage.getItem('searchText'));
   }, [location]);
 
-  function handleSubmit(evt) {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     searchMovie(searchText);
     location.pathname === '/movies' && localStorage.setItem('searchText', evt.target.search.value);
   }
 
-  function handleChange(evt) {
+  const handleChange = (evt) => {
     setSearchText(evt.target.value);
   }
 
@@ -33,7 +33,7 @@ function Search({ searchMovie, onIsShort, isShort }) {
         onChange={handleChange}
         value={searchText == null ? '' : searchText}
       />
-      <SearchFilter onIsShort={onIsShort} isShort={isShort} />
+      <FilterCheckbox onIsShort={onIsShort} isShort={isShort} />
       <div className='decoration'> </div>
     </section>
   );

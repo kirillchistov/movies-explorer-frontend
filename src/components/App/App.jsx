@@ -1,5 +1,6 @@
+//  App — корневой компонент приложения, его создаёт CRA  //
 //  Импорт библиотек  //
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Redirect,
   Route,
@@ -7,6 +8,7 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
+
 //  Импорт всех компонентов  //
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Header from '../Header/Header';
@@ -27,46 +29,44 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './App.css';
 
 //  Компонент приложения с хуками, состояниями и эффектами жизненного цикла  //
+//  Стейты авторизации, прелоудера, ошибок, стартового набора фильмов, поиска и т.д.  //
 const App = () => {
   const history = useHistory();
   const location = useLocation();
   
-  //  Авторизация  //
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  //  Активный пользователь  //
-  const [currentUser, setCurrentUser] = React.useState({
+  const [loggedIn, setloggedIn] = useState(false);
+  
+  const [currentUser, setCurrentUser] = useState({
     name: '',
     email: '',
   });
-  //  Ожидание загрузки данных  //
-  const [isLoading, setIsLoading] = React.useState(true);
-  //  Ошибки регистрации, авторизации и редактирования профиля  //
-  const [requestSignUpError, setRequestSignUpError] = React.useState({
+  
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const [requestSignUpError, setRequestSignUpError] = useState({
     isRequestError: false,
     messageRequestError: '',
   });
-  const [requestSignInError, setRequestSignInError] = React.useState({
+  const [requestSignInError, setRequestSignInError] = useState({
     isRequestError: false,
     messageRequestError: '',
   });
-  const [requestEditProfileError, setRequestEditProfileError] = React.useState({
+  const [requestEditProfileError, setRequestEditProfileError] = useState({
     isRequestError: false,
     messageRequestError: '',
   });
   
-  //  Карточки фильмов при загрузке  //
-  const [allMovies, setAllMovies] = React.useState([]);
-  const [filteredMovies, setFilteredMovies] = React.useState([]);
-  const [savedMovies, setSavedMovies] = React.useState([]);
-  const [filteredSavedMovies, setFilteredSavedMovies] = React.useState([]);
+  const [allMovies, setAllMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
 
-  // Ошибка поиска  //
-  const [requestSearchError, setRequestSearchError] = React.useState({
+  const [requestSearchError, setRequestSearchError] = useState({
     isRequestError: false,
     messageRequestError: '',
   });
 
-  //  Обработка авторизации  //
+  //  Обработчик логина  //
   const handleSignIn = (data) => {
     auth
       .signInApi(data)
@@ -81,7 +81,7 @@ const App = () => {
         console.log('Ошибка авторизации');
         console.log(err);
         if (err.statusCode === 400) {
-          err.message = 'Неправильный логин или пароль';
+          err.message = 'Вы ввели неправильный логин или пароль';
         }
         setRequestSignInError({
           isRequestError: true,
@@ -90,8 +90,8 @@ const App = () => {
       });
   }
 
-  //  Проверка токена  //
-  const handleTokenCheck = useCallback(() => {
+  // Обработчик проверки токена  //
+  const handleTokenCheck = () => {
     // console.log('check');
     const token = localStorage.getItem('jwt');
     if (token) {
@@ -99,7 +99,7 @@ const App = () => {
         .authApi(token)
         .then((res) => {
           if (res) {
-            setIsLoggedIn(true);
+            setloggedIn(true);
             setCurrentUser({ name: res.name, email: res.email });
             mainApi.setToken(token);
             history.push(location.pathname);
@@ -115,9 +115,9 @@ const App = () => {
       // return;
     }
     // handleSignOut();
-  })
+  }
 
-  //  Регистрация  //
+  //  Обработчик регистрации  //
   const handleSignUp = (data) => {
     auth
       .signUpApi(data)
@@ -135,10 +135,10 @@ const App = () => {
       });
   }
 
-  //  Выход и очистка localStorage   //
+  //  Обработчик выхода из аккаунта  //
   const handleSignOut = () => {
     localStorage.clear();
-    setIsLoggedIn(false);
+    setloggedIn(false);
     setAllMovies([]);
     setSavedMovies([]);
     setFilteredMovies([]);
@@ -150,8 +150,8 @@ const App = () => {
     history.push('/');
   }
 
-  //  Обновление профиля  //
-  function handleUpdateProfile(data) {
+  //  Обработчик редактирования профиля  //
+  const handleUpdateProfile= (data) => {
     mainApi
       .editProfileApi(data)
       .then((res) => {
@@ -172,17 +172,17 @@ const App = () => {
       });
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     handleTokenCheck();
-  }, [handleTokenCheck]);
+  }, []);
 
-  //  Фильмы   //
-  React.useEffect(() => {
+  //  Хук поиска по фильмам  //
+  useEffect(() => {
     setRequestSearchError({
       isRequestError: false,
       messageRequestError: '',
     });  
-    if (isLoggedIn) {
+    if (loggedIn) {
       // localStorage.setItem('shortMovie', false);
       // localStorage.setItem('searchText', '');
       getAllMovies();
@@ -198,9 +198,9 @@ const App = () => {
         setIsLoading(false);
       }
     }
-  }, [isLoggedIn]);
+  }, [loggedIn]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (location.pathname === '/movies') {
       if (!localStorage.getItem('searchMovies')) {
         setRequestSearchError({
@@ -218,6 +218,7 @@ const App = () => {
     }
   }, [location, savedMovies]);
 
+  //  Получение коллекции всех фильмов  //
   const getAllMovies = () => {
     if (localStorage.getItem('allMovies')) {
       setAllMovies(JSON.parse(localStorage.getItem('allMovies')));
@@ -233,12 +234,13 @@ const App = () => {
           setRequestSearchError({
             isRequestError: true,
             messageRequestError:
-              'Во время запроса произошла ошибка соединения с сервером. Возможно, сервер недоступен. Подождите немного и попробуйте ещё раз',
+              'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз',
           });
         });
     }
   }
 
+  //  Получение сохраненных фильмов  //
   const getSavedMovies = () => {
     mainApi
       .getSavedMovies()
@@ -251,8 +253,8 @@ const App = () => {
       });
   }
 
-  // сохранить в избранное
-  const handlerAddSavedMovies = (card) => {
+  //  Обработчик сохранения избранных фильмов  //
+  const handleAddSavedMovies = (card) => {
     addSavedMovies(card);
   }
 
@@ -268,7 +270,7 @@ const App = () => {
       });
   }
 
-  // убрать из избранного
+  // Удаление из избранного
   const handlerRemoveSavedMovies = (card) => {
     savedMovies.forEach((i) => {
       if (i.movieId === card.id) {
@@ -277,6 +279,7 @@ const App = () => {
     });
   }
 
+  //  Удаление из избранного  //
   const removeSavedMovies = (card) => {
     mainApi
       .removeMovie(card._id)
@@ -291,10 +294,10 @@ const App = () => {
       });
   }
 
-  // проверка наличия у фильма отметки избранного
+  //  Обработка избранного - проверка наличия закладки  //
   const handleBookmark = (card) => {
     if (!onCheckBookmark(card)) {
-      handlerAddSavedMovies(card);
+      handleAddSavedMovies(card);
     } else {
       handlerRemoveSavedMovies(card);
     }
@@ -303,16 +306,14 @@ const App = () => {
   const onCheckBookmark = (card) => {
     return savedMovies.some((i) => i.movieId === card.id);
   }
-  // Поиск в Фильмы
+  //  Поиск по фильмам  //
   const searchMovie = (searchText) => {
-    // getAllMovies();
     const allMoviesPage = location.pathname === '/movies';
     const savedMoviesPage = location.pathname === '/saved-movies';
     const movies = allMoviesPage ? allMovies : savedMovies;
 
     setIsLoading(true);
     setRequestSearchError({ isRequestError: false, messageRequestError: '' });
-    // setFilteredMovies([]);
 
     const filter = movies.filter((i) =>
       i.nameRU.toLowerCase().includes(searchText.toLowerCase()),
@@ -326,7 +327,7 @@ const App = () => {
       if (!searchText) {
         setRequestSearchError({
           isRequestError: true,
-          messageRequestError: 'Нужно ввести ключевое слово',
+          messageRequestError: 'Введите ключевое слово',
         });
         // return;
       }
@@ -337,7 +338,7 @@ const App = () => {
       if (!searchText) {
         setRequestSearchError({
           isRequestError: true,
-          messageRequestError: 'Нужно ввести ключевое слово',
+          messageRequestError: 'Введите ключевое слово',
         });
         localStorage.removeItem('searchMovies');
         setFilteredMovies([]);
@@ -368,8 +369,8 @@ const App = () => {
       <div className='page'>
         <Switch>
           <Route exact path='/'>
-            <Header isLoggedIn={isLoggedIn} />
-            <Main isLoggedIn={isLoggedIn} />
+            <Header loggedIn={loggedIn} />
+            <Main loggedIn={loggedIn} />
             <Footer />
           </Route>
 
@@ -377,7 +378,7 @@ const App = () => {
             component={Movies}
             exact
             path='/movies'
-            isLoggedIn={isLoggedIn}
+            loggedIn={loggedIn}
             isLoading={isLoading}
             movies={filteredMovies}
             searchMovie={searchMovie}
@@ -391,7 +392,7 @@ const App = () => {
             component={SavedMovies}
             exact
             path='/saved-movies'
-            isLoggedIn={isLoggedIn}
+            loggedIn={loggedIn}
             isLoading={isLoading}
             movies={filteredSavedMovies}
             searchMovie={searchMovie}
@@ -404,14 +405,14 @@ const App = () => {
             component={Profile}
             exact
             path='/profile'
-            isLoggedIn={isLoggedIn}
+            loggedIn={loggedIn}
             onSignOut={handleSignOut}
             onUpdateProfile={handleUpdateProfile}
             requestEditProfileError={requestEditProfileError}
           ></ProtectedRoute>
 
           <Route path='/signup'>
-            {isLoggedIn ? (
+            {loggedIn ? (
               <Redirect to='/movies' />
             ) : (
               <Register
@@ -422,7 +423,7 @@ const App = () => {
           </Route>
 
           <Route path='/signin'>
-            {isLoggedIn ? (
+            {loggedIn ? (
               <Redirect to='/movies' />
             ) : (
               <Login

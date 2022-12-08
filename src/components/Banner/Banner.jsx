@@ -4,7 +4,7 @@ import NavTab from '../NavTab/NavTab';
 
 import './Banner.css';
 
-function Banner() {
+const Banner = () => {
   return (
     <section className='banner'>
       <Promo />

@@ -1,8 +1,8 @@
 //  Хук для обработки данных в форме  //
-import React from 'react';
+import { useState } from 'react';
 
-function useForm(inputValues) {
-  const [values, setValues] = React.useState(inputValues);
+const useForm = (inputValues) => {
+  const [values, setValues] = useState(inputValues);
 
   const handleChange = (event) => {
     const { value, name } = event.target;

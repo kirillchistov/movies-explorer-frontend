@@ -1,7 +1,7 @@
 //  Компонент с галереей сохраненных фильмов  //
 //  Применяем фильтр по короткометражкам isShort //
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './SavedMovies.css';
 
 import Header from '../Header/Header';
@@ -10,27 +10,27 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Footer from '../Footer/Footer';
 
-import { SHORTTIME } from '../../utils/constants';
+import { SHORTFILM } from '../../utils/constants';
 
-function SavedMovies({
+const SavedMovies = ({
   requestSearchError,
   searchMovie,
   setRequestSearchError,
   removeSavedMovies,
   movies,
-  isLoggedIn,
-}) {
-  const [isShort, setIsShort] = React.useState(false);
+  loggedIn,
+}) => {
+  const [isShort, setIsShort] = useState(false);
 
-  function handleIsShort() {
+  const handleIsShort = () => {
     setIsShort(!isShort);
   }
 
   const listMovies = isShort
-    ? movies.filter((item) => item.duration <= SHORTTIME)
+    ? movies.filter((item) => item.duration <= SHORTFILM)
     : movies;
 
-  React.useEffect(() => {
+  useEffect(() => {
     setRequestSearchError({
       isRequestError: false,
       messageRequestError: '',
@@ -44,7 +44,7 @@ function SavedMovies({
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header loggedIn={loggedIn} />
 
       <Search
         onIsShort={handleIsShort}

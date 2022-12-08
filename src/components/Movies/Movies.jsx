@@ -1,5 +1,5 @@
-//  Компонент с галереей фильмов  //
-import React from 'react';
+//   Movies — компонент страницы с поиском по фильмам  //
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Movies.css';
 
@@ -11,38 +11,37 @@ import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Footer from '../Footer/Footer';
 import Preloader from '../Preloader/Preloader';
 
-import { SHORTTIME } from '../../utils/constants';
+import { SHORTFILM } from '../../utils/constants';
 
-function Movies({
+const Movies = ({
   onBookmark,
   onCheckBookmark,
   setRequestSearchError,
   requestSearchError,
   searchMovie,
   movies,
-  isLoggedIn,
+  loggedIn,
   isLoading,
-}) {
+}) => {
   const location = useLocation();
-  const [isShort, setIsShort] = React.useState(false);
-
-  function handleIsShort() {
+  const [isShort, setIsShort] = useState(false);
+  
+  const handleIsShort = () => {
     setIsShort(!isShort);
     localStorage.setItem('shortMovie', !isShort);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem('shortMovie')) {
       setIsShort(JSON.parse(localStorage.getItem('shortMovie')));
     }
   }, [location]);
 
-  // Применение фильтра
   const listMovies = isShort
-    ? movies.filter((item) => item.duration <= SHORTTIME)
+    ? movies.filter((item) => item.duration <= SHORTFILM)
     : movies;
 
-  React.useEffect(() => {
+  useEffect(() => {
     setRequestSearchError({
       isRequestError: false,
       messageRequestError: '',
@@ -56,7 +55,7 @@ function Movies({
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header loggedIn={loggedIn} />
 
       <Search
         onIsShort={handleIsShort}

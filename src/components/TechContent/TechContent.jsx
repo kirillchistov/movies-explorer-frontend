@@ -1,6 +1,6 @@
 import './TechContent.css';
 
-function TechContent() {
+const TechContent = () => {
   return (
     <>
       <h3 className='techs__title'>7 технологий</h3>

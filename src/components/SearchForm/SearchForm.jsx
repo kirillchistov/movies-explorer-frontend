@@ -1,7 +1,7 @@
-//  Компонент формы поиска по фильмам  //
+//  SearchForm — форма поиска, куда пользователь будет вводить запрос  //
 import './SearchForm.css';
 
-function SearchForm({ value, onSubmit, onChange }) {
+const SearchForm = ({ value, onSubmit, onChange }) => {
   return (
     <form className='search__form' name='search' onSubmit={onSubmit}>
       <input
@@ -9,8 +9,6 @@ function SearchForm({ value, onSubmit, onChange }) {
         type='text'
         id='search'
         name='search'
-        // minLength='2'
-        // required
         encType='text/plain'
         placeholder='Фильм'
         onChange={onChange}

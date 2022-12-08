@@ -6,13 +6,13 @@ import logo from '../../images/headerlogo.svg';
 import HeaderWithAuth from '../HeaderWithAuth/HeaderWithAuth';
 import HeaderNotAuth from '../HeaderNotAuth/HeaderNotAuth';
 
-function Header({ isLoggedIn }) {
+const Header = ({ loggedIn }) => {
   return (
     <header className='header'>
       <Link to='/'>
         <img src={logo} alt='Логотип дипломного проекта' className='header__logo' />
       </Link>
-      {isLoggedIn ? <HeaderWithAuth /> : <HeaderNotAuth />}
+      {loggedIn ? <HeaderWithAuth /> : <HeaderNotAuth />}
     </header>
   );
 }

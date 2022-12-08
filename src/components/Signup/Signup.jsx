@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import './Signup.css';
 
-function Signup() {
+const Signup = () => {
   return (
     <div className='signup'>
-      <Link to='/signup' className='link signup__link'>
+      <Link to='/signup' className='signup__link link'>
         Регистрация
       </Link>
-      <Link to='signin' className='link signup__link signup__link_active'>
+      <Link to='signin' className='signin__link signin__link_active'>
         Войти
       </Link>
     </div>

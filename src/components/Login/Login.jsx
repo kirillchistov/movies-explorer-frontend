@@ -1,21 +1,20 @@
-//  Компонент с формой логина  //
-import React from 'react';
+//  Login — компонент страницы авторизации  //
+import React, { useEffect } from 'react';
 import './Login.css';
 import AuthForm from '../AuthForm/AuthForm';
 import AuthHeader from '../AuthHeader/AuthHeader';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 
-function Login({ onSignIn, requestSignInError }) {
-  const { values, handleChange, errors, isValid, resetForm } =
-    useFormWithValidation();
+const Login = ({ onSignIn, requestSignInError }) => {
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
   const isDisabled = !isValid;
 
-  function handleSubmit(evt) {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     onSignIn(values);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     resetForm({}, {}, false);
   }, [resetForm]);
 

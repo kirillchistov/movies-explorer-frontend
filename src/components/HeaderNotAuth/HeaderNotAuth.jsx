@@ -1,7 +1,7 @@
 //  Шапка блока для неавторизованного пользователя  //
 import Signup from '../Signup/Signup';
 
-function HeaderNotAuth() {
+const HeaderNotAuth = () => {
   return <Signup />;
 }
 

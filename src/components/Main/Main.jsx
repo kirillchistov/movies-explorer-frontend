@@ -6,7 +6,7 @@ import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import './Main.css';
 
-function Main({ isLoggedIn }) {
+const Main = ({ loggedIn }) => {
   return (
     <main className='content'>
       <Banner />

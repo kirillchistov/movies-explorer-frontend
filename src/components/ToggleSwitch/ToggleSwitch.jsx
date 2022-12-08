@@ -1,7 +1,7 @@
 //  Компонент переключения  //
 import './ToggleSwitch.css';
 
-function ToggleSwitch({ status, onColor, handleToggleClick, name }) {
+const ToggleSwitch = ({ status, onColor, handleToggleClick, name }) => {
   return (
     <>
       <input

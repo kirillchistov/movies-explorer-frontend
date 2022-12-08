@@ -1,7 +1,7 @@
-//  Компонент секции Портфолио  //
+//  Portfolio — компонент со ссылками на другие проекты  //
 import './Portfolio.css';
 
-function Portfolio() {
+const Portfolio = () => {
   return (
     <div className='portfolio'>
       <h3 className='portfolio__title'>Портфолио</h3>

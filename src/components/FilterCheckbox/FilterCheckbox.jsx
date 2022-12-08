@@ -1,10 +1,10 @@
-//  Фильтр поиска по фильмам (короткометражек)  //
+//  FilterCheckbox - фильтр с чекбоксом 'Только короткометражки'  //
 import React from 'react';
 import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 
-import './SearchFilter.css';
+import './FilterCheckbox.css';
 
-function SearchFilter({onIsShort, isShort}) {
+const FilterCheckbox = ({onIsShort, isShort}) => {
   return (
     <div className='search__filter'>
       <ToggleSwitch
@@ -17,4 +17,4 @@ function SearchFilter({onIsShort, isShort}) {
   );
 }
 
-export default SearchFilter;
+export default FilterCheckbox;

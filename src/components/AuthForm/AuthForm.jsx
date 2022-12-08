@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import './AuthForm.css';
 
-function AuthForm({
+const AuthForm = ({
   onChange,
   onSubmit,
   isSubmitDisabled,
@@ -16,7 +16,7 @@ function AuthForm({
   link,
   linkText,
   requestError,
-}) {
+}) => {
   const { isRequestError, messageRequestError } = requestError;
 
   return (
@@ -114,7 +114,7 @@ function AuthForm({
             {messageRequestError}
           </span>
           <button
-            className='auth__button link'
+            className='auth__button'
             type='submit'
             aria-label={`Кнопка ${buttonText}`}
             disabled={isSubmitDisabled}

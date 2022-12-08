@@ -106,7 +106,7 @@
   line-height: 17px;
   border: none;
   border-radius: 3px;
-  background-color: var(--color-orange);
+  background-color: var(--color-black);
 }
 
 .auth__button:disabled {

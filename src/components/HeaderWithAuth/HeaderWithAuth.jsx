@@ -1,18 +1,18 @@
 //  Шапка блока для авторизованного пользователя  //
-import React from 'react';
+import React, { useState } from 'react';
 
 import Navigation from '../Navigation/Navigation';
 import Account from '../Account/Account';
 import Burger from '../Burger/Burger';
 
-function HeaderWithAuth() {
-  const [isOpen, setIsOpen] = React.useState(false);
+const HeaderWithAuth = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  function handleCloseClick() {
+  const handleCloseClick = () => {
     setIsOpen(false);
   }
 
-  function handleBurgerClick() {
+  const handleBurgerClick = () => {
     setIsOpen(!isOpen);
   }
 
