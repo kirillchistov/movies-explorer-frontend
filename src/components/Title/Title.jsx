@@ -1,4 +1,4 @@
-//  Компонент с загловком блока  //
+//  Компонент с заголовком секции  //
 const Title = ({title}) => {
   return (
     <h2 className="section-block__title">{title}</h2>

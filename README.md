@@ -10,9 +10,10 @@
 * [x] Back-end (Node.js, MongoDB, Express, Nginx)
 * [x] Git, WebPack, Babel и т.д.
 
+* [x] [Макет в Figma](https://www.figma.com/file/5EdPMImgPvR41ySthcC7EZ/Diploma-KirillChistov?node-id=932%3A3407&t=enUuU8mMuHcz6Zf9-1), [Я.Диск](https://disk.yandex.ru/d/vgAm4ePEm2e12g)
 # Репозитории:
-* [ ] [Backend Level-1](https://github.com/kirillchistov/movies-explorer-api/tree/level-1)
-* [x] [Frontend Level-1](https://github.com/kirillchistov/movies-explorer-frontend/tree/level-1)
+* [x] [Backend Level-1](https://github.com/kirillchistov/movies-explorer-api/tree/level-1)
+* [x] [Frontend Level-1](https://github.com/kirillchistov/movies-explorer-frontend/tree/level-2)
 
 ## Навигация по [front-end](https://github.com/kirillchistov/movies-explorer-api/tree/level-1)
 * [x] `index.js` — точка входа 

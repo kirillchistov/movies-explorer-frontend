@@ -1,4 +1,4 @@
-//  Portfolio — компонент со ссылками на другие проекты  //
+//  Portfolio — компонент со ссылками на другие проекты студента  //
 import './Portfolio.css';
 
 const Portfolio = () => {

@@ -1,4 +1,4 @@
-//  Компонент для hero-баннеры с навигацией  //
+//  Компонент для hero-блока с навигацией  //
 import Promo from '../Promo/Promo';
 import NavTab from '../NavTab/NavTab';
 

@@ -374,10 +374,26 @@ const App = () => {
             <Footer />
           </Route>
 
+          <Route path='/movies-demo'>
+            {loggedIn ? (
+              <Redirect to='/movies' />
+            ) : (
+              <Movies
+                component={Movies}
+                isLoading={isLoading}
+                movies={filteredMovies}
+                searchMovie={searchMovie}
+                onBookmark={handleBookmark}
+                onCheckBookmark={onCheckBookmark}
+                setRequestSearchError={setRequestSearchError}
+                requestSearchError={requestSearchError}
+              />
+            )}
+          </Route>
+
           <ProtectedRoute
             component={Movies}
-            exact
-            path='/movies'
+            exact path='/movies'
             loggedIn={loggedIn}
             isLoading={isLoading}
             movies={filteredMovies}
@@ -386,7 +402,7 @@ const App = () => {
             onCheckBookmark={onCheckBookmark}
             setRequestSearchError={setRequestSearchError}
             requestSearchError={requestSearchError}
-          ></ProtectedRoute>
+          />
 
           <ProtectedRoute
             component={SavedMovies}
@@ -399,7 +415,7 @@ const App = () => {
             removeSavedMovies={removeSavedMovies}
             setRequestSearchError={setRequestSearchError}
             requestSearchError={requestSearchError}
-          ></ProtectedRoute>
+          />
 
           <ProtectedRoute
             component={Profile}
@@ -409,7 +425,7 @@ const App = () => {
             onSignOut={handleSignOut}
             onUpdateProfile={handleUpdateProfile}
             requestEditProfileError={requestEditProfileError}
-          ></ProtectedRoute>
+          />
 
           <Route path='/signup'>
             {loggedIn ? (

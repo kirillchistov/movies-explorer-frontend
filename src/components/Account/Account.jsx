@@ -4,7 +4,7 @@ import './Account.css';
 
 const Account = () => {
   return (
-    <Link className='account link' to='/profile'>
+    <Link className='link account' to='/profile'>
       Аккаунт
     </Link>
   );

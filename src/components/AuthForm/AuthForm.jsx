@@ -123,7 +123,7 @@ const AuthForm = ({
           </button>
           <p className='auth__text'>
             {text}
-            <Link className='auth__link link' to={link}>
+            <Link className='link auth__link' to={link}>
               {linkText}
             </Link>
           </p>

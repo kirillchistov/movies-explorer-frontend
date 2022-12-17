@@ -3,7 +3,7 @@ import './More.css';
 
 const More = ({ onLoadMore }) => {
   return (
-    <button className='movies__button button link' onClick={onLoadMore}>
+    <button className='link movies__button button' onClick={onLoadMore}>
       Ещё
     </button>
   );

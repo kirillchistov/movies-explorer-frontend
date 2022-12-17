@@ -152,7 +152,7 @@ const Profile = ({
               </button>
             ) : (
               <button
-                className='profile__button profile__button_edit button link'
+                className='profile__button link profile__button_edit button'
                 type='button'
                 onClick={handleEditProfile}
               >
@@ -161,7 +161,7 @@ const Profile = ({
             )}
 
             <button
-              className='profile__button profile__button_signout button link'
+              className='profile__button link profile__button_signout button'
               type='button'
               onClick={onSignOut}
             >

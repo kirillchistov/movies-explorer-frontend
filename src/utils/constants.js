@@ -1,8 +1,8 @@
 //  const BASEURL = 'https://api.christoff.nomoredomains.club/';
-const BASEURL = 'http://localhost:3000';
+const BASEURL = 'http://localhost:3003';
 const MOVIESURL = 'https://api.nomoreparties.co/beatfilm-movies';
 
-//  Хроно для короткометражек в мин.  //
+//  Хроно для короткометражек <=40 мин.  //
 const SHORTFILM = 40;
 
 //  Константы для экранов и пагинации - ленты фильмов  //

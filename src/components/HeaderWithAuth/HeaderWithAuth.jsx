@@ -25,7 +25,7 @@ const HeaderWithAuth = () => {
       <div className={isOpen ? 'header__mobile' : 'header__mobile hidden'}>
         <div className='header__container'>
           <button
-            className='header__close button link'
+            className='link button header__close'
             onClick={handleCloseClick}
           ></button>
           <Navigation type='column'/>
