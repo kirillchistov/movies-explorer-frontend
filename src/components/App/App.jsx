@@ -37,8 +37,8 @@ const App = () => {
   const [loggedIn, setloggedIn] = useState(false);
   
   const [currentUser, setCurrentUser] = useState({
-    name: '',
-    email: '',
+    name: 'Kirill',
+    email: 'kirill.v.chistov@yandex.ru',
   });
   
   const [isLoading, setIsLoading] = useState(true);
@@ -374,23 +374,6 @@ const App = () => {
             <Footer />
           </Route>
 
-          <Route path='/movies-demo'>
-            {loggedIn ? (
-              <Redirect to='/movies' />
-            ) : (
-              <Movies
-                component={Movies}
-                isLoading={isLoading}
-                movies={filteredMovies}
-                searchMovie={searchMovie}
-                onBookmark={handleBookmark}
-                onCheckBookmark={onCheckBookmark}
-                setRequestSearchError={setRequestSearchError}
-                requestSearchError={requestSearchError}
-              />
-            )}
-          </Route>
-
           <ProtectedRoute
             component={Movies}
             exact path='/movies'
@@ -427,17 +410,6 @@ const App = () => {
             requestEditProfileError={requestEditProfileError}
           />
 
-          <Route path='/signup'>
-            {loggedIn ? (
-              <Redirect to='/movies' />
-            ) : (
-              <Register
-                onSignUp={handleSignUp}
-                requestSignUpError={requestSignUpError}
-              />
-            )}
-          </Route>
-
           <Route path='/signin'>
             {loggedIn ? (
               <Redirect to='/movies' />
@@ -445,6 +417,17 @@ const App = () => {
               <Login
                 onSignIn={handleSignIn}
                 requestSignInError={requestSignInError}
+              />
+            )}
+          </Route>
+
+          <Route path='/signup'>
+            {loggedIn ? (
+              <Redirect to='/movies' />
+            ) : (
+              <Register
+                onSignUp={handleSignUp}
+                requestSignUpError={requestSignUpError}
               />
             )}
           </Route>

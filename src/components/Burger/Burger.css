@@ -5,14 +5,15 @@
   display: none;
   box-sizing: border-box;
   object-fit: contain;
-/*  background: none; */
-  background-image: url(../../images/burger.svg);
+  background: none;
+/*  background-image: url(../../images/burger.svg); */
 }
   
 @media screen and (max-width: 768px) {
   .header__burger {
     display: block;
     background-image: url(../../images/burger.svg);
+    border: none;
   }
 }
   

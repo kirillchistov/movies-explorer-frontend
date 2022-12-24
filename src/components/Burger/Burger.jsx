@@ -7,7 +7,7 @@ const Burger = ({ isOpen, onClick }) => {
       className={
         isOpen
           ? 'link button hidden header__burger'
-          : 'link button header__burger'
+          : 'link header__burger'
       }
       onClick={onClick}
     ></button>

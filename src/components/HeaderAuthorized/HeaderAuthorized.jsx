@@ -5,7 +5,7 @@ import Navigation from '../Navigation/Navigation';
 import Account from '../Account/Account';
 import Burger from '../Burger/Burger';
 
-const HeaderWithAuth = () => {
+const HeaderAuthorized = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCloseClick = () => {
@@ -36,4 +36,4 @@ const HeaderWithAuth = () => {
     </>
   );
 }
-export default HeaderWithAuth;
+export default HeaderAuthorized;

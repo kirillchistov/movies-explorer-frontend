@@ -40,7 +40,7 @@ body {
   cursor: pointer;
   padding: 0;
   border: none;
-  background-color: #00000000;
+  background-color: #000;
   transition: 0.3s;
 }
 

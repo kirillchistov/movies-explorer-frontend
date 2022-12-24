@@ -13,7 +13,8 @@
 * [x] [Макет в Figma](https://www.figma.com/file/5EdPMImgPvR41ySthcC7EZ/Diploma-KirillChistov?node-id=932%3A3407&t=enUuU8mMuHcz6Zf9-1), [Я.Диск](https://disk.yandex.ru/d/vgAm4ePEm2e12g)
 # Репозитории:
 * [x] [Backend Level-1](https://github.com/kirillchistov/movies-explorer-api/tree/level-1)
-* [x] [Frontend Level-1](https://github.com/kirillchistov/movies-explorer-frontend/tree/level-2)
+* [x] [Frontend Level-2](https://github.com/kirillchistov/movies-explorer-frontend/tree/level-2)
+* [ ] [Frontend Level-3](https://github.com/kirillchistov/movies-explorer-frontend/tree/level-3)
 
 ## Навигация по [front-end](https://github.com/kirillchistov/movies-explorer-api/tree/level-1)
 * [x] `index.js` — точка входа 
