@@ -67,7 +67,7 @@ const Profile = ({
   return (
     <>
       <Header loggedIn={loggedIn} />
-      <section className='profile'>
+      <main className='profile'>
         <h2 className='profile__title'>{`Привет, ${currentUser.name}!`}</h2>
         <form className='profile__form' name='profile' onSubmit={handleSubmit}>
           <div className='profile__list'>
@@ -169,7 +169,7 @@ const Profile = ({
             </button>
           </div>
         </form>
-      </section>
+      </main>
     </>
   );
 }

@@ -7,17 +7,17 @@ const ToggleSwitch = ({ status, onColor, handleToggleClick, name }) => {
       <input
         checked={status}
         onChange={handleToggleClick}
-        className='toggleswitch'
+        className='search__toggleswitch'
         id={`toggleswitch`}
         type='checkbox'
       />
       <label
         style={{ background: status && onColor }}
-        className='toggleswitch__label'
+        className='search__toggleswitch-label'
         htmlFor={`toggleswitch`}
       >
-        <span className={`toggleswitch__button`} />
-        <p className="toggleswitch__caption">{name}</p>
+        <span className={`search__toggleswitch-button`} />
+        <p className='search__toggleswitch-caption'>{name}</p>
       </label>
     </>
   );

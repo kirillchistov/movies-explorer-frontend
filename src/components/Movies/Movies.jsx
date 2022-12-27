@@ -56,25 +56,25 @@ const Movies = ({
   return (
     <>
       <Header loggedIn={loggedIn} />
-
-      <Search
-        onIsShort={handleIsShort}
-        isShort={isShort}
-        searchMovie={searchMovie}
-      />
-
-      <ErrorMessage requestSearchError={requestSearchError} />
-
-      {isLoading && <Preloader />}
-
-      {!isLoading && (
-        <MoviesCardList
-          onBookmark={onBookmark}
-          onCheckBookmark={onCheckBookmark}
-          movies={listMovies}
+      <main className='content'>
+        <Search
+          onIsShort={handleIsShort}
+          isShort={isShort}
+          searchMovie={searchMovie}
         />
-      )}
 
+        <ErrorMessage requestSearchError={requestSearchError} />
+
+        {isLoading && <Preloader />}
+
+        {!isLoading && (
+          <MoviesCardList
+            onBookmark={onBookmark}
+            onCheckBookmark={onCheckBookmark}
+            movies={listMovies}
+          />
+        )}
+      </main>
       <Footer />
     </>
   );

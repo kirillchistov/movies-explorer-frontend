@@ -14,7 +14,7 @@ const SearchForm = ({ value, onSubmit, onChange }) => {
         onChange={onChange}
         value={value}
       />
-      <button type='submit' className='button link search__button'></button>
+      <button type='submit' className='link search__button'></button>
     </form>
   );
 }

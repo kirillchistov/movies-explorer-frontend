@@ -1,10 +1,10 @@
-.toggleswitch {
+.search__toggleswitch {
   height: 0;
   width: 0;
   visibility: hidden;
 }
   
-.toggleswitch__label {
+.search__toggleswitch-label {
   width: 36px;
   height: 20px;
   position: relative;
@@ -17,7 +17,7 @@
   transition: background-color 0.2s;
 }
   
-.toggleswitch__label .toggleswitch__button {
+.search__toggleswitch-label .search__toggleswitch-button {
   content: '';
   width: 16px;
   height: 16px;
@@ -30,16 +30,16 @@
   background: var(--color-white);
 }
   
-.toggleswitch:checked + .toggleswitch__label .toggleswitch__button {
+.search__toggleswitch:checked + .search__toggleswitch-label .search__toggleswitch-button {
   left: calc(100% - 2px);
   transform: translateX(-100%);
 }
   
-.toggleswitch__label:active .toggleswitch__button {
+.search__toggleswitch-label:active .search__toggleswitch-button {
   width: 22px;
 }
   
-.toggleswitch__caption {
+.search__toggleswitch-caption {
   margin: 0;
   padding-left: 50px;
   position: absolute;
@@ -49,7 +49,7 @@
 }
   
 @media screen and (max-width: 620px) {
-  .toggleswitch__caption {
+  .search__toggleswitch-caption {
     font-size: 11px;
     line-height: 18px;
   }

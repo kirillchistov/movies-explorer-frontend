@@ -45,20 +45,20 @@ const SavedMovies = ({
   return (
     <>
       <Header loggedIn={loggedIn} />
+      <main className='content'>
+        <Search
+          onIsShort={handleIsShort}
+          isShort={isShort}
+          searchMovie={searchMovie}
+        />
 
-      <Search
-        onIsShort={handleIsShort}
-        isShort={isShort}
-        searchMovie={searchMovie}
-      />
+        <ErrorMessage requestSearchError={requestSearchError} />
 
-      <ErrorMessage requestSearchError={requestSearchError} />
-
-      <MoviesCardList
-        movies={listMovies}
-        removeSavedMovies={removeSavedMovies}
-      />
-
+        <MoviesCardList
+          movies={listMovies}
+          removeSavedMovies={removeSavedMovies}
+        />
+      </main>
       <Footer />
     </>
   );
