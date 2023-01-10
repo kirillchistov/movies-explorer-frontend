@@ -50,6 +50,7 @@
   
 @media screen and (max-width: 620px) {
   .search__toggleswitch-caption {
+    padding-left: 48px;
     font-size: 11px;
     line-height: 18px;
   }

@@ -53,6 +53,10 @@
     .header {
       padding: 18px 30px;
     }
+
+    .header__container {
+      padding-top: 159px;
+    }
   }
   
   @media screen and (max-width: 768px) {
@@ -63,7 +67,7 @@
     .header__container {
       width: 520px;
       height: 100%;
-      padding-top: 159px 0 90px;
+      padding: 159px 0 90px;
       position: fixed;
       top: 0;
       right: 0;
