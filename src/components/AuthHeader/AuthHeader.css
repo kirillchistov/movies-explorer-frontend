@@ -1,0 +1,39 @@
+.auth-header {
+  margin: 0 auto;
+  padding-top: 70px;
+  padding-bottom: 40px;
+  max-width: 396px;
+  display: grid;
+  gap: 40px;
+  justify-items: left;
+}
+  
+.auth-header__logo {
+  width: 38px;
+  height: auto;
+  margin: 0;
+  display: block;
+  box-sizing: border-box;
+  object-fit: contain;
+}
+  
+.auth-header__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 29px;
+}
+  
+@media screen and (max-width: 920px) {
+  .auth-header {
+    padding-top: 230px;
+  }
+}
+  
+@media screen and (max-width: 620px) {
+  .auth-header {
+    padding-top: 56px;
+    padding-bottom: 80px;
+    justify-items: center;
+  }
+}

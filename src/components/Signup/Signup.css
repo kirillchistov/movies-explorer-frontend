@@ -1,0 +1,41 @@
+.signup {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+}
+  
+.signup__link {
+  padding: 8px 20px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  border: none;
+  border-radius: 3px;
+  background: none;
+}
+
+.signin__link {
+  padding: 8px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  border: none;
+  border-radius: 3px;
+  background: none;
+}
+
+.signin__link_active {
+  color: var(--color-white);
+  background-color: var(--color-black);
+}
+  
+@media screen and (max-width: 920px) {
+  
+}
+  
+@media screen and (max-width: 620px) {
+
+}
