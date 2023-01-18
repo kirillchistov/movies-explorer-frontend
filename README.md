@@ -25,7 +25,7 @@
 * [x] `/utils` - константы, API и прочие утилиты
 * [x] `/vendor` - внешние скрипты, шрифты и прочие внешние ресурсы
 
-## [Pull Request Level-3]()
+## [Pull Request Level-3](https://github.com/kirillchistov/movies-explorer-frontend/pull/34)
 
 
 # Рабочая версия в Яндекс Облаке
