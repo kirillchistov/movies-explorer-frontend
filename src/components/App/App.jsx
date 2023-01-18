@@ -327,7 +327,7 @@ const App = () => {
       if (!searchText) {
         setRequestSearchError({
           isRequestError: true,
-          messageRequestError: 'Введите ключевое слово',
+          messageRequestError: 'Нужно ввести ключевое слово',
         });
         // return;
       }
@@ -338,7 +338,7 @@ const App = () => {
       if (!searchText) {
         setRequestSearchError({
           isRequestError: true,
-          messageRequestError: 'Введите ключевое слово',
+          messageRequestError: 'Нужно ввести ключевое слово',
         });
         localStorage.removeItem('searchMovies');
         setFilteredMovies([]);

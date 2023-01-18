@@ -2,7 +2,7 @@
 Репозиторий фронтенда дипломного проекта Movie. Это сервис, в котором можно найти фильмы по запросу и сохранить в личном кабинете. Функциональность включает возможность регистрации для получения доступа в ЛК авторизованным пользователям.
 
 # Автор
-* [Кирилл Чистов](https://github.com/kirillchistov), студент веб-факультета "Я.Практикум" (когорта 47)
+* [Кирилл Чистов](https://github.com/kirillchistov), студент веб-факультета "Практикум" (когорта 47)
 
 # Стек технологий
 * [x] HTML, CSS (БЭМ Flat, адаптив Flex + Grid)
@@ -14,7 +14,7 @@
 # Репозитории:
 * [x] [Backend Level-1](https://github.com/kirillchistov/movies-explorer-api/tree/level-1)
 * [x] [Frontend Level-2](https://github.com/kirillchistov/movies-explorer-frontend/tree/level-2)
-* [ ] [Frontend Level-3](https://github.com/kirillchistov/movies-explorer-frontend/tree/level-3)
+* [x] [Frontend Level-3](https://github.com/kirillchistov/movies-explorer-frontend/tree/level-3)
 
 ## Навигация по [front-end](https://github.com/kirillchistov/movies-explorer-api/tree/level-1)
 * [x] `index.js` — точка входа 
@@ -24,6 +24,9 @@
 * [x] `/images` - все изображения проекта
 * [x] `/utils` - константы, API и прочие утилиты
 * [x] `/vendor` - внешние скрипты, шрифты и прочие внешние ресурсы
+
+## [Pull Request Level-3]()
+
 
 # Рабочая версия в Яндекс Облаке
 * [x] IP: 62.84.123.141

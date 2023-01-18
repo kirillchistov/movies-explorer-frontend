@@ -10,6 +10,7 @@
   
 .search__input {
   width: 100%;
+  margin-right: 41px;
   padding: 25px 25px 25px 65px;
   color: var(--color-black);
   font-family: inherit;
@@ -62,6 +63,7 @@
   
 @media screen and (max-width: 920px) {
   .search__input {
+    margin-right: 20px;
     font-size: 13px;
     line-height: 18px;
   }
@@ -75,10 +77,11 @@
     border-radius: 9px;
   }  
   .search__input {
+    margin-right: 10px;
+    padding-left: 19px;
     font-size: 14px;
     line-height: 20px;
     background: none;
-    padding-left: 19px;
   }
   .search__button {
     border: none;
