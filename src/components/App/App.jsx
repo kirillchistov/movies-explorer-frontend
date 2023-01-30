@@ -25,7 +25,7 @@ import mainApi from '../../utils/MainApi.js';
 import moviesApi from '../../utils/MoviesApi';
 //  Импорт контекста пользователя  //
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-//  Импорт локальных стилей  //
+
 import './App.css';
 
 //  Компонент приложения с хуками, состояниями и эффектами жизненного цикла  //
@@ -33,16 +33,16 @@ import './App.css';
 const App = () => {
   const history = useHistory();
   const location = useLocation();
-  
+
   const [loggedIn, setloggedIn] = useState(false);
-  
+
   const [currentUser, setCurrentUser] = useState({
     name: 'Kirill',
     email: 'kirill.v.chistov@yandex.ru',
   });
-  
+
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const [requestSignUpError, setRequestSignUpError] = useState({
     isRequestError: false,
     messageRequestError: '',
@@ -55,7 +55,7 @@ const App = () => {
     isRequestError: false,
     messageRequestError: '',
   });
-  
+
   const [allMovies, setAllMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
@@ -92,7 +92,6 @@ const App = () => {
 
   // Обработчик проверки токена  //
   const handleTokenCheck = () => {
-    // console.log('check');
     const token = localStorage.getItem('jwt');
     if (token) {
       auth
@@ -135,7 +134,7 @@ const App = () => {
       });
   }
 
-  //  Обработчик выхода из аккаунта  //
+  //  Обработчик выхода из аккаунта - очистка локального хранилища и контекста  //
   const handleSignOut = () => {
     localStorage.clear();
     setloggedIn(false);
@@ -151,7 +150,7 @@ const App = () => {
   }
 
   //  Обработчик редактирования профиля  //
-  const handleUpdateProfile= (data) => {
+  const handleUpdateProfile = (data) => {
     mainApi
       .editProfileApi(data)
       .then((res) => {
@@ -181,7 +180,7 @@ const App = () => {
     setRequestSearchError({
       isRequestError: false,
       messageRequestError: '',
-    });  
+    });
     if (loggedIn) {
       // localStorage.setItem('shortMovie', false);
       // localStorage.setItem('searchText', '');
@@ -213,7 +212,7 @@ const App = () => {
       setRequestSearchError({
         isRequestError: false,
         messageRequestError: '',
-      });  
+      });
       setFilteredSavedMovies(savedMovies);
     }
   }, [location, savedMovies]);
