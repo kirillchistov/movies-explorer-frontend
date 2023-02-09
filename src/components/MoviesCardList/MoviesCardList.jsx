@@ -18,12 +18,9 @@ const MoviesCardList = ({ movies }) => {
   return (
     <section className='movies'>
       <ul className='movies__elements'>
-        {movies.map = (item) => (
-          <MoviesCard
-            key={item.id}
-            card={item}
-          />
-        )}
+        {movies.map((item) => (
+          <MoviesCard key={item.id} card={item} />
+        ))}
       </ul>
 
       <More />
