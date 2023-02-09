@@ -2,19 +2,17 @@
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
 
-const Navigation = ({type}) => {
-  const navigationClassName = type==='row' ? `navigation__item navigation__item_row link` : `navigation__item navigation__item_column link`
-
+//  Рендер комонента с простой адаптивностью flex row или column  //
+const Navigation = () => {
   return (
-    <nav className={type==='row' ? 'navigation navigation_row' : 'navigation navigation_column'}>
-      <NavLink exact to='/' activeClassName='navigation__item_active' className={navigationClassName}>  
+    <nav className='navigation'>
+      <NavLink exact to='/' activeClassName='navigation__item_active' className='navigation__item'>
         Главная
       </NavLink>
-      <NavLink exact to='/movies' activeClassName='navigation__item_active' className={navigationClassName}>
+      <NavLink exact to='/movies' activeClassName='navigation__item_active' className='navigation__item'>
         Фильмы
       </NavLink>
-      <NavLink exact to='/saved-movies' activeClassName='navigation__item_active' className={navigationClassName}>
-        Сохранённые фильмы
+      <NavLink exact to='/saved-movies' activeClassName='navigation__item_active' className='navigation__item'>
       </NavLink>
     </nav>
   );
