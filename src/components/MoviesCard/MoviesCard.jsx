@@ -1,6 +1,5 @@
 //  Компонент карточки фильма  //
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 
 import './MoviesCard.css';
 
@@ -20,7 +19,7 @@ const MoviesCard = ({ card }) => {
       </div>
       <a href={card.trailerLink} target='blank' className='link'>
         <img
-          src={imageSource}
+          src={card.imageSource}
           alt={`Иллюстрация фильма ${card.nameRU}`}
           className='element__image'
         />

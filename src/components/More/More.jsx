@@ -7,9 +7,9 @@
 
 import './More.css';
 
-const More = ({ onLoadMore }) => {
+const More = () => {
   return (
-    <button className='link movies__button' onClick={onLoadMore}>
+    <button className='link movies__button' onClick={console.log('will load more')}>
       Ещё
     </button>
   );
