@@ -13,6 +13,7 @@ const Navigation = () => {
         Фильмы
       </NavLink>
       <NavLink exact to='/saved-movies' activeClassName='navigation__item_active' className='navigation__item'>
+        Сохранённые фильмы
       </NavLink>
     </nav>
   );

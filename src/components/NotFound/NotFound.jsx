@@ -1,4 +1,5 @@
 //  Страница 404  //
+//  Просто flex с заголовком, абзацем и кнопкой "Назад"  //
 import { useHistory } from 'react-router-dom';
 
 import './NotFound.css';
@@ -7,7 +8,7 @@ const NotFound = () => {
   const history = useHistory();
 
   const goBack = () => {
-    history.go(-2);
+    history.go(-1);
   }
 
   return (

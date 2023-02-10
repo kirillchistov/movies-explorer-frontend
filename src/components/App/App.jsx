@@ -25,7 +25,7 @@ const App = () => {
       <div className='page'>
         <Switch>
           <Route exact path='/'>
-            <Header loggedIn={false} />
+            <Header loggedIn={true} />
             <Main />
             <Footer />
           </Route>

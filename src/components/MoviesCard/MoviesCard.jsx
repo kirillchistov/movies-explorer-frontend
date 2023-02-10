@@ -19,7 +19,7 @@ const MoviesCard = ({ card }) => {
       </div>
       <a href={card.trailerLink} target='blank' className='link'>
         <img
-          src={card.imageSource}
+          src={`https://api.nomoreparties.co/${card.image.url}`}
           alt={`Иллюстрация фильма ${card.nameRU}`}
           className='element__image'
         />

@@ -6,6 +6,7 @@
 
 .navigation__item {
   font-size: 13px;
+  text-decoration: none;
   line-height: 18px;
   font-weight: 400;
 }
@@ -22,16 +23,6 @@
   .navigation {
     flex-direction: column;
     gap: 28px;
-  }
-
-  .navigation__item {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 22px;
-  }
-
-  .navigation__item:first-child {
-    display: ;
   }
 
   .navigation__item_active {
