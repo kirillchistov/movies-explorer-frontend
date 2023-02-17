@@ -71,7 +71,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-      Promise.all([handleToken(),getMovies()])
+      Promise.all([handleToken(),MainApi.getMovies()])
       setUserLocation(location.pathname)
   }, []);
 

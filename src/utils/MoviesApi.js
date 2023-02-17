@@ -1,39 +1,26 @@
 //  API для получения фильмов с сервера Я  //
 //  Проверка ответа сервера, получение коллекции фильмов  //
+//  Перепишем на функциональный компонент  //
 
 import { MOVIESURL } from './constants.js';
 
-class MoviesApi {
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+const checkResponse = async (res) => {
+  if (res.ok) {
+    return await res.json();
   }
-
-  async _checkResponse(res) {
-    if (!res.ok) {
-      return Promise.reject(await res.json());
-    }
-    return res.json();
-  }
-
-  // Загрузка карточек фильмов
-  getAllMovies() {
-    return fetch(`${this._baseUrl}`, {
-      method: 'GET',
-      headers: this._headers,
-    }).then(this._checkResponse);
-  }
-
+  return Promise.reject({statusCode: res.status, message: res.message});
 }
-const API_CONFIG = {
-  baseUrl: MOVIESURL,
-  credentials: 'include',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  },
-};
 
-const moviesApi = new MoviesApi(API_CONFIG);
-
-export default moviesApi;
+export const getMovies= async () => {
+  try {
+    const movies = await fetch(MOVIESURL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    return await checkResponse(movies);
+  } catch (err) {
+    console.log(`Ошибка получения фильмов: ${err}`);
+  }
+}

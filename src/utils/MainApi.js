@@ -1,52 +1,63 @@
 //  Главный API ЛК - авторизация, работа с профилем и коллекцией фильмов  //
 //  Проверка ответа сервера, создание токена, редактирование профиля, коллекции фильмов  //
-
+//  Переписал на функциональный компонент  //
 import { BASEURL } from './constants.js';
 
-class MainApi {
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
-  }
-
-  async _checkResponse(res) {
-    if (!res.ok) {
-      return Promise.reject(await res.json());
+const mainApi = () => {
+  const checkResponse = async (res) => {
+    if (res.ok) {
+      return await res.json();
     }
-    return res.json();
+    return Promise.reject({statusCode: res.status, message: res.message});
+  };
+
+  const setToken = (token) => {
+    return fetch(`${BASEURL}/users/me`, {
+      method: "GET",
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    }).then(checkResponse)
   }
 
-  setToken(token) {
-    this._headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
+  const editProfileApi = (name, email) => {
+    const token = localStorage.getItem("token");
+    return fetch(`${BASEURL}/users/me`, {
+      method: "PATCH",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({name, email})
+    })
+      .then(checkResponse)
   }
 
-  editProfileApi(data) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: 'PATCH',
-      credentials: 'include',
-      headers: this._headers,
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-      }),
-    }).then(this._checkResponse);
-  }
-
-  getSavedMovies() {
-    return fetch(`${this._baseUrl}/movies`, {
+  const getSavedMovies = () => {
+    const token = localStorage.getItem("token");
+    return fetch(`${BASEURL}/movies`, {
       method: 'GET',
       credentials: 'include',
-      headers: this._headers,
-    }).then(this._checkResponse);
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    }).then(checkResponse);
   }
 
-  addMovie(data) {
-    return fetch(`${this._baseUrl}/movies`, {
+  const addMovie = (data) => {
+    const token = localStorage.getItem("token");
+    return fetch(`${BASEURL}/movies`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify({
         country: data.country,
         director: data.director,
@@ -60,22 +71,20 @@ class MainApi {
         nameRU: data.nameRU,
         nameEN: data.nameEN,
       }),
-    }).then(this._checkResponse);
+    }).then(checkResponse);
   }
 
-  removeMovie(movieId) {
-    return fetch(`${this._baseUrl}/movies/${movieId}`, {
+  const removeMovie = (movieId) => {
+    const token = localStorage.getItem("token");
+    return fetch(`${BASEURL}/movies/${movieId}`, {
       method: 'DELETE',
-      headers: this._headers,
-    }).then(this._checkResponse);
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    }).then(checkResponse);
   }
 }
-
-const API_CONFIG = {
-  baseUrl: BASEURL,
-  credentials: 'include',
-};
-
-const mainApi = new MainApi(API_CONFIG);
 
 export default mainApi;

@@ -1,66 +1,56 @@
 //  Модуль авторизации  //
 import { BASEURL } from './constants.js';
+/* Перепишем на функции */
 
-class Auth {
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+//  Вместо локального метода делаем функцию проверки ответа сервера  //
+//  Перепишем потом на async try await  //
+//  Информативное сообщение по ошибке, пока не экспортируем  //
+const checkResponse = async (res) => {
+  if (res.ok) {
+    return await res.json();
   }
+  return Promise.reject({statusCode: res.status, message: res.message});
+}
 
-  async _checkResponse(res) {
-    if (!res.ok) {
-      return Promise.reject(await res.json());
-    }
-    return res.json();
-  }
 
-  signUpApi(data) {
-    return fetch(`${this._baseUrl}/signup`, {
+//  Функция с пост-запросом на создание регистрации  //
+//  потом сделаем async try await  //
+export const register = async (email, password, name) => {
+  const user = await fetch(`${BASEURL}/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({name, email, password})
+  })
+  return await checkResponse(user);
+}
+
+//  Функция с пост-запросом на авторизацию  //
+//  потом сделаем async try await  //
+
+export const login = async (email, password) => {
+  return fetch(`${BASEURL}/signin`, {
       method: 'POST',
       credentials: 'include',
-      headers: this._headers,
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-      }),
-    }).then(this._checkResponse);
-  }
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({password, email})
+  })
+  .then(checkResponse);
+};
 
-  signInApi(data) {
-    return fetch(`${this._baseUrl}/signin`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: this._headers,
-      body: JSON.stringify({
-        email: data.email,
-        password: data.password,
-      }),
-    }).then(this._checkResponse);
-  }
-
-  authApi(token) {
-    return fetch(`${this._baseUrl}/users/me`, {
+export const checkToken = (token) => {
+  return fetch(`${BASEURL}/users/me`, {
       method: 'GET',
       credentials: 'include',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Authorization" : `Bearer ${token}`
       },
-    }).then(this._checkResponse);
-  }
+  })
+  .then(checkResponse);
 }
 
-const API_CONFIG = {
-  baseUrl: BASEURL,
-  credentials: 'include',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  },
-};
-
-const auth = new Auth(API_CONFIG);
-
-export default auth;
