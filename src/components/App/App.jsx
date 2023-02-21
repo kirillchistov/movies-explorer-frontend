@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-//  App — корневой компонент приложения, его создаёт CRA  //
+
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, useLocation, useHistory, Redirect } from 'react-router-dom';
-//  withRouter, Redirect  не используем  //
+import { Route, Switch, Redirect  } from 'react-router-dom';
+// useHistory, useLocation, withRouter //
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -13,13 +13,12 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 
-//  Добавляем компоненты Popup?, Preloader, MainApi, Token и Context  //
 //  import Popup from '../Popup/Popup';  //
-import Preloader from '../Preloader/Preloader';
+// import Preloader from '../Preloader/Preloader';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import MainApi from '../../utils/MainApi';
-import * as MoviesApi from '../../utils/MoviesApi';
-import * as auth from '../../utils/auth';
+// import MainApi from '../../utils/MainApi';
+//  import {getMovies} from '../../utils/MoviesApi';
+import {checkToken, register, login} from '../../utils/auth';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 //  Импорт стилей  //
@@ -30,22 +29,25 @@ const App = () => {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUserContext, setCurrentUserContext] = useState({});
-  const history = useHistory();
-  const location = useLocation();
-  const [userLocation, setUserLocation] = useState('');
+  //  const history = useHistory();
+  //  const location = useLocation();
+  //  const [userLocation, setUserLocation] = useState('');  //
 
-  // const [movies, setMovies] = useState([]);  //
-  const [savedMovies, setSavedMovies] = useState([]);
-  // const [allMovies, setAllMovies] = useState([]);
-  const [foundMovies, setFoundMovies] = useState([]);
-  // const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);  //
+  //  const [isLoading, setIsLoading] = useState(false);
+
+  //  const [movies, setMovies] = useState([]);  //
+  //  const [savedMovies, setSavedMovies] = useState([]);
+  //  const [allMovies, setAllMovies] = useState([]);
+  //  const [foundMovies, setFoundMovies] = useState([]);
+  //  const [filteredMovies, setFilteredMovies] = useState([]);  //
+  //  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);  //
 
   //  const [isError, setIsError] = useState(false);  //
   //  const [errorMessage, setErrorMessage] = useState('Что-то пошло не так... Попробуйте позже!');  //
   //  const [savedMoviesCards, setSavedMoviesCards] = useState([]);  //
 
   //  const [isShort, setIsShort] = useState(false);  //
-  //  const [isLoad, setIsLoad] = useState(false);  //
+
   //  const [searchMessage, setSearchMessage] = useState('');  //
   //  const [savedSearchedMoviesCards, setSavedSearchedMoviesCards] = useState([]);
   //  const [isSearched, setIsSearched] = useState(false);  //
@@ -67,14 +69,16 @@ const App = () => {
 
 
   useEffect(() => {
-    auth.checkToken();
+    checkToken();
   }, []);
 
+/*
   useEffect(() => {
       Promise.all([handleToken(),getMovies()])
       setUserLocation(location.pathname)
   }, []);
-
+*/
+/*
   const getMovies = () => {
     MainApi.getSavedMovies()
     .then((res) => {
@@ -83,7 +87,9 @@ const App = () => {
       setSavedMovies(res)
     }).catch((err) => console.log(err))
   }
+*/
 
+/*
   useEffect(() => {
     if(loggedIn){
       history.push(userLocation);
@@ -101,9 +107,10 @@ const App = () => {
       }
     }
   }, [loggedIn, userLocation]);
+*/
 
   const handleToken = () => {
-    return auth.checkToken()
+    return checkToken()
       .then((res) => {
         if (res) {
           setLoggedIn(true);
@@ -113,36 +120,11 @@ const App = () => {
   };
 
     //  Обработчик логина  //
-/*
-  const handleLogin = (data) => {
-    auth
-      .login(data)
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem('jwt', res.token);
-          handleToken();
-          history.push('/movies');
-        }
-      })
-      .catch((err) => {
-        console.log('Ошибка авторизации');
-        console.log(err);
-        if (err.statusCode === 400) {
-          err.message = 'Вы ввели неправильный логин или пароль';
-        }
-        setRequestLoginError({
-          isRequestError: true,
-          messageRequestError: err.message,
-        });
-      });
-  }
-  */
-
   const handleLogin = (email, password) => {
-    return auth.authorize(email, password).then((res) => {
-        auth();
-        setUserLocation('/movies')
-        history.push('/movies')
+    return login(email, password).then((res) => {
+//        auth();
+//        setUserLocation('/movies')
+//        history.push('/movies')
     }).catch(()=>{
       alert('Неверный E-mail или пароль!')
     });
@@ -169,7 +151,7 @@ const App = () => {
   */
 
   const handleRegister = (email, name, password) => {
-    return auth.register(email, name, password).then((res) => {
+    return register(email, name, password).then((res) => {
       alert('Вы успешно зарегистрировались!')
       handleLogin(email, password);
     }).catch(()=> {
@@ -182,36 +164,37 @@ const App = () => {
         <CurrentUserContext.Provider value={currentUserContext}>
           <Switch>
             <Route exact path='/'>
-              <Header loggedIn={true} />
-              <Main />
+              <Header loggedIn={loggedIn} />
+              <Main loggedIn={loggedIn} />
               <Footer />
             </Route>
 
+{/*
             <Route path='/movies'>
               <Header loggedIn={true} />
               <Preloader />
-              <Movies />
+              <Movies foundMovies={foundMovies} />
               <Footer />
             </Route>
-
+*/}
             <ProtectedRoute
-              exact
-              path="/movies"
-              RedirectPath="/"
-              isMoviesPage={true}
-              isSavedMoviesPage={false}
-              isAccount={false}
-              isLoggedIn={loggedIn}
-              savedMovies={savedMovies}
-              components={[Header, Movies]}
-              foundMovies={foundMovies}
-              setFoundMovies={setFoundMovies}
-              setSavedMovies={setSavedMovies}
+              component={Movies}
+              exact path='/movies'
+              loggedIn={loggedIn}
+/*
+              isLoading={isLoading}
+              movies={filteredMovies}
+              searchMovie={searchMovie}
+              onBookmark={handleBookmark}
+              onCheckBookmark={onCheckBookmark}
+              setRequestSearchError={setRequestSearchError}
+              requestSearchError={requestSearchError}
+*/
             />
 
             <Route exact path='/saved-movies'>
               <Header loggedIn={true} />
-              <SavedMovies />
+              <SavedMovies /* savedMovies={savedMovies} */ />
               <Footer />
             </Route>
 

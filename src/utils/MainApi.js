@@ -1,16 +1,16 @@
 //  Главный API ЛК - авторизация, работа с профилем и коллекцией фильмов  //
 //  Проверка ответа сервера, создание токена, редактирование профиля, коллекции фильмов  //
 //  Переписал на функциональный компонент  //
-import { BASEURL } from './constants.js';
+//  import { BASEURL } from './constants.js';  //
 
-const mainApi = () => {
-  const checkResponse = async (res) => {
+export const checkResponse = async (res) => {
     if (res.ok) {
       return await res.json();
     }
     return Promise.reject({statusCode: res.status, message: res.message});
   };
 
+/*
   const setToken = (token) => {
     return fetch(`${BASEURL}/users/me`, {
       method: "GET",
@@ -20,9 +20,12 @@ const mainApi = () => {
         Authorization: `Bearer ${token}`
       }
     }).then(checkResponse)
-  }
 
-  const editProfileApi = (name, email) => {
+  }
+*/
+
+/*
+  const editProfile = (name, email) => {
     const token = localStorage.getItem("token");
     return fetch(`${BASEURL}/users/me`, {
       method: "PATCH",
@@ -35,7 +38,9 @@ const mainApi = () => {
     })
       .then(checkResponse)
   }
+*/
 
+/*
   const getSavedMovies = () => {
     const token = localStorage.getItem("token");
     return fetch(`${BASEURL}/movies`, {
@@ -48,7 +53,9 @@ const mainApi = () => {
       },
     }).then(checkResponse);
   }
+*/
 
+/*
   const addMovie = (data) => {
     const token = localStorage.getItem("token");
     return fetch(`${BASEURL}/movies`, {
@@ -73,7 +80,8 @@ const mainApi = () => {
       }),
     }).then(checkResponse);
   }
-
+*/
+/*
   const removeMovie = (movieId) => {
     const token = localStorage.getItem("token");
     return fetch(`${BASEURL}/movies/${movieId}`, {
@@ -86,5 +94,8 @@ const mainApi = () => {
     }).then(checkResponse);
   }
 }
+*/
 
-export default mainApi;
+
+
+//  export default mainApi;  //

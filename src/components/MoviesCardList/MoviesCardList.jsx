@@ -12,14 +12,14 @@ import React from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import More from '../More/More';
-import movies from '../../utils/moviesdb';
+//  import movies from '../../utils/moviesdb';  //
 
-const MoviesCardList = () => {
-  const movielist = movies;
+const MoviesCardList = ({movies}) => {
+//   const movielist = movies;  //
   return (
     <section className='movies'>
       <ul className='movies__elements'>
-        {movielist.map((item) => (
+        {movies.map((item) => (
           <MoviesCard key={item.id} card={item} />
         ))}
       </ul>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './AuthForm.css';
 
 const AuthForm = ({
-  onChange,
+/*  onChange,
   onSubmit,
   isSubmitDisabled,
   formName,
@@ -16,6 +16,7 @@ const AuthForm = ({
   link,
   linkText,
   requestError,
+*/
 }) => {
   const { isRequestError, messageRequestError } = requestError;
 

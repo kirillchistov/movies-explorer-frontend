@@ -11,7 +11,7 @@ const checkResponse = async (res) => {
   return Promise.reject({statusCode: res.status, message: res.message});
 }
 
-export const getMovies= async () => {
+export const getMovies = async () => {
   try {
     const movies = await fetch(MOVIESURL, {
       method: "GET",

@@ -1,8 +1,8 @@
 //  Шапка блока для неавторизованного пользователя  //
 import Signup from '../Signup/Signup';
 
-const HeaderUnauth = () => {
+const HeaderLoggedOut = () => {
   return <Signup />;
 }
 
-export default HeaderUnauth;
+export default HeaderLoggedOut;

@@ -30,7 +30,7 @@ export const register = async (email, password, name) => {
 //  потом сделаем async try await  //
 
 export const login = async (email, password) => {
-  return fetch(`${BASEURL}/signin`, {
+  return await fetch(`${BASEURL}/signin`, {
       method: 'POST',
       credentials: 'include',
       headers: {
