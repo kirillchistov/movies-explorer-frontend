@@ -1,14 +1,18 @@
 //  API для получения фильмов с сервера Я  //
-//  Проверка ответа сервера, получение коллекции фильмов  //
-//  Перепишем на функциональный компонент  //
+//  Проверка ответа сервера, получение всей коллекции фильмов  //
+//  Переписал на функциональный компонент  //
 
 import { MOVIESURL } from './constants.js';
 
 const checkResponse = async (res) => {
-  if (res.ok) {
-    return await res.json();
+  try {
+    if (res.ok) {
+      return await res.json();
+    }
+    return Promise.reject({statusCode: res.status, message: res.message});
+  } catch (err) {
+    console.log(`Ошибка запроса к серверу: ${err}`);
   }
-  return Promise.reject({statusCode: res.status, message: res.message});
 }
 
 export const getMovies = async () => {

@@ -16,7 +16,7 @@ import Profile from '../Profile/Profile';
 //  import Popup from '../Popup/Popup';  //
 // import Preloader from '../Preloader/Preloader';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-// import MainApi from '../../utils/MainApi';
+// import {setToken, editProfile, getSavedMovies, addMovie, removeMovie} from '../../utils/MainApi';
 //  import {getMovies} from '../../utils/MoviesApi';
 import {checkToken, register, login} from '../../utils/auth';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
