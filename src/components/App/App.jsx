@@ -20,14 +20,16 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 //  import {getMovies} from '../../utils/MoviesApi';
 import {checkToken, register, login} from '../../utils/auth';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+//  import { SearchContext } from '../../contexts/SearchContext';  //
 
 //  Импорт стилей  //
 import './App.css';
 
-//  Рендер верстки компонентов без функциональности  //
+//  Сначала хуки, потом хендлеры, потом рендер  //
 const App = () => {
-
+  //  состояния авторизации  //
   const [loggedIn, setLoggedIn] = useState(false);
+  //  состояния авторизации  //
   const [currentUserContext, setCurrentUserContext] = useState({});
   //  const history = useHistory();
   //  const location = useLocation();
@@ -131,6 +133,7 @@ const App = () => {
   };
 
     //  Обработчик регистрации  //
+
 /*
   const handleRegister = (data) => {
     auth
@@ -148,8 +151,7 @@ const App = () => {
         });
       });
   }
-  */
-
+*/
   const handleRegister = (email, name, password) => {
     return register(email, name, password).then((res) => {
       alert('Вы успешно зарегистрировались!')
@@ -186,7 +188,7 @@ const App = () => {
               movies={filteredMovies}
               searchMovie={searchMovie}
               onBookmark={handleBookmark}
-              onCheckBookmark={onCheckBookmark}
+              checkBookmark={checkBookmark}
               setRequestSearchError={setRequestSearchError}
               requestSearchError={requestSearchError}
 */

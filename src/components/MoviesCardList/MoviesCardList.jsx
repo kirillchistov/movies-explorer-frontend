@@ -8,25 +8,87 @@
 //  Ширина 768px — 8 карточек по 2 в ряд. «Ещё» загружает по 2 карточки.  //
 //  Ширина от 320px до 480px — 5 карточек по 1 в ряд. «Ещё» загружает по 2 карточки  //
 
-import React from 'react';
-import './MoviesCardList.css';
+import React, {useState, useEffect} from 'react';
+import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import More from '../More/More';
+import {
+        LARGESCREEN, DEFAULTONLARGESCREEN, INCREASEONLARGESCREEN,
+          MIDDLESCREEN, DEFAULTONMIDDLESCREEN, INCREASEONMIDDLESCREEN,
+            DEFAULTONSMALLSCREEN, INCREASEONSMALLSCREEN } from '../../utils/constants';
+import './MoviesCardList.css';
 //  import movies from '../../utils/moviesdb';  //
 
-const MoviesCardList = ({movies}) => {
-//   const movielist = movies;  //
+export const MoviesCardList = ({
+  onBookmark,
+  checkBookmark,
+  deleteBookmark,
+  movies,
+  }) => {
+  const location = useLocation();
+
+  const [moviesToShow, setMoviesToShow] = useState(0);
+  const [screen, setScreen] = useState(window.innerWidth);
+
+  //  проверяем путь, чтобы понять какой список готовить  //
+  const savedMoviesPath = location.pathname === '/saved-movies';
+
+  //  для /movies в зависимости от разрешения выводим карт выводим нужное число карточек  //
+  const countCards = () => {
+    if (screen >= LARGESCREEN) {
+      setMoviesToShow(DEFAULTONLARGESCREEN);
+    } else if (screen < LARGESCREEN && screen >= MIDDLESCREEN) {
+      setMoviesToShow(DEFAULTONMIDDLESCREEN);
+    } else if (screen <= MIDDLESCREEN) {
+      setMoviesToShow(DEFAULTONSMALLSCREEN);
+    }
+  }
+
+  //  При изменении размера окна через сек снова запускаем расчет  //
+  //  Надо бы делать по условию, что !savedMoviesPath  //
+  window.onresize = function () {
+    setTimeout(() => {
+      countCards();
+      setScreen(window.innerWidth);
+    }, 1000);
+  };
+
+  //  Хук для работы с отрисовкой карточек в компоненте  //
+  useEffect(() => {
+    countCards();
+  }, []);
+
+  //  Обрабатываем клик по кнопке "Еще"  //
+  //  В зависимости от размера окна и масштаба добавляем карточки на страницу  //
+
+  const handleClickMore = () => {
+    if (screen >= LARGESCREEN) {
+      setMoviesToShow(moviesToShow + INCREASEONLARGESCREEN);
+    } else if (screen < LARGESCREEN && screen >= MIDDLESCREEN) {
+      setMoviesToShow(moviesToShow + INCREASEONMIDDLESCREEN);
+    } else if (screen <= MIDDLESCREEN) {
+      setMoviesToShow(moviesToShow + INCREASEONSMALLSCREEN);
+    }
+  }
+
+  //  В сохраненных выбираем все фильмы, на основной - первые X по калькулятору moviesToShow //
   return (
     <section className='movies'>
       <ul className='movies__elements'>
-        {movies.map((item) => (
-          <MoviesCard key={item.id} card={item} />
+        {movies.slice(0, savedMoviesPath ? movies.length : moviesToShow).map((item) => (
+          <MoviesCard
+            key={item.id || item.movieId}
+            card={item}
+            onBookmark={onBookmark}
+            checkBookmark={checkBookmark}
+            deleteBookmark={deleteBookmark}
+          />
         ))}
       </ul>
-
-      <More />
+      {/* скрыть кнопку если карточек нет или мало */}
+      {!savedMoviesPath && movies.length > moviesToShow && (
+        <More onLoadMore={handleClickMore} />
+      )}
     </section>
-  );
-}
-
-export default MoviesCardList;
+  )
+  };
