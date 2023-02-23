@@ -7,7 +7,7 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
 import './Search.css';
 
-const Search = ({ searchMovie, onIsShort, isShort }) => {
+const Search = ({ searchMovie, onIsShortie, isShortie }) => {
   const location = useLocation();
   const [searchText, setSearchText] = useState('');
 
@@ -33,7 +33,7 @@ const Search = ({ searchMovie, onIsShort, isShort }) => {
         onChange={handleChange}
         value={searchText == null ? '' : searchText}
       />
-      <FilterCheckbox onIsShort={onIsShort} isShort={isShort} />
+      <FilterCheckbox onIsShortie={onIsShortie} isShortie={isShortie} />
       <div className='decoration'> </div>
     </section>
   );

@@ -4,6 +4,7 @@
 
 import { MOVIESURL } from './constants.js';
 
+//  Проверяем ответ от сервера   //
 const checkResponse = async (res) => {
   try {
     if (res.ok) {
@@ -15,7 +16,8 @@ const checkResponse = async (res) => {
   }
 }
 
-export const getMovies = async () => {
+//  Получаем сразу все фильмы с сервера   //
+export const getAllMovies = async () => {
   try {
     const movies = await fetch(MOVIESURL, {
       method: "GET",

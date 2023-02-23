@@ -4,7 +4,7 @@ const MOVIESURL = 'https://api.nomoreparties.co/beatfilm-movies';
 const BASEMOVIE = 'https://api.nomoreparties.co/'
 
 //  Хроно для короткометражек <=40 мин.  //
-const SHORTFILM = 40;
+const SHORTIE = 40;
 
 //  Константы для экранов и пагинации - ленты фильмов  //
 //  1280px — 12 фильмов, по 3 в ряд. «Ещё» + 3 фильма  //
@@ -27,7 +27,7 @@ export {
   BASEURL,
   MOVIESURL,
   BASEMOVIE,
-  SHORTFILM,
+  SHORTIE,
   LARGESCREEN,
   MIDDLESCREEN,
   SMALLSCREEN,

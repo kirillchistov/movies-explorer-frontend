@@ -4,13 +4,13 @@ import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 
 import './FilterCheckbox.css';
 
-const FilterCheckbox = ({onIsShort, isShort}) => {
+const FilterCheckbox = ({onIsShortie, isShortie}) => {
   return (
     <div className='search__filter'>
       <ToggleSwitch
-        status={isShort}
+        status={isShortie}
         onColor='var(--color-green)'
-        handleToggleClick={onIsShort}
+        handleToggleClick={onIsShortie}
         name={'Короткометражки'}
       />
     </div>

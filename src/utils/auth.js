@@ -15,7 +15,7 @@ const checkResponse = async (res) => {
 
 //  Функция с пост-запросом на создание регистрации  //
 //  потом сделаем async try await  //
-export const register = async (email, password, name) => {
+export const authRegister = async (email, password, name) => {
   const user = await fetch(`${BASEURL}/signup`, {
     method: "POST",
     headers: {
@@ -29,7 +29,7 @@ export const register = async (email, password, name) => {
 //  Функция с пост-запросом на авторизацию  //
 //  потом сделаем async try await  //
 
-export const login = async (email, password) => {
+export const authLogin = async (email, password) => {
   return await fetch(`${BASEURL}/signin`, {
       method: 'POST',
       credentials: 'include',
@@ -41,7 +41,7 @@ export const login = async (email, password) => {
   .then(checkResponse);
 };
 
-export const checkToken = (token) => {
+export const authToken = (token) => {
   return fetch(`${BASEURL}/users/me`, {
       method: 'GET',
       credentials: 'include',

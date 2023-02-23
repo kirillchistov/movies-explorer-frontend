@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, Redirect  } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 // useHistory, useLocation, withRouter //
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -13,13 +13,22 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 
-//  import Popup from '../Popup/Popup';  //
-// import Preloader from '../Preloader/Preloader';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-// import {setToken, editProfile, getSavedMovies, addMovie, removeMovie} from '../../utils/MainApi';
-//  import {getMovies} from '../../utils/MoviesApi';
-import {checkToken, register, login} from '../../utils/auth';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+//  import Popup from '../Popup/Popup';
+import Preloader from '../Preloader/Preloader';
+//  import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+/*
+import {
+  setToken,
+  editProfile,
+  getSavedMovies,
+  addMovie,
+  removeMovie
+  } from '../../utils/MainApi';
+*/
+import {getAllMovies} from '../../utils/MoviesApi';
+//  import {checkToken, register, login} from '../../utils/auth';  //
+//  import {authLogin, authRegister, authToken} from '../../utils/auth';
+//  import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 //  import { SearchContext } from '../../contexts/SearchContext';  //
 
 //  Импорт стилей  //
@@ -27,34 +36,44 @@ import './App.css';
 
 //  Сначала хуки, потом хендлеры, потом рендер  //
 const App = () => {
+  /*
   //  состояния авторизации  //
   const [loggedIn, setLoggedIn] = useState(false);
-  //  состояния авторизации  //
+  //  контекст текущего пользователя  //
   const [currentUserContext, setCurrentUserContext] = useState({});
-  //  const history = useHistory();
-  //  const location = useLocation();
-  //  const [userLocation, setUserLocation] = useState('');  //
+  //  текущая страница, история браузера пользователя и состояние //
+  const history = useHistory();
+  const location = useLocation();
+  const [userLocation, setUserLocation] = useState('');
 
-  //  const [isLoading, setIsLoading] = useState(false);
+  //  Состояние загрузчика (ожидание загрузки данных)  //
+  const [isLoading, setIsLoading] = useState(false);
 
-  //  const [movies, setMovies] = useState([]);  //
-  //  const [savedMovies, setSavedMovies] = useState([]);
-  //  const [allMovies, setAllMovies] = useState([]);
-  //  const [foundMovies, setFoundMovies] = useState([]);
-  //  const [filteredMovies, setFilteredMovies] = useState([]);  //
-  //  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);  //
+  //  состояние для работы с текущим массивом фильмов //
+  const [movies, setMovies] = useState([]);
+  //  для массива сохраненных фильмов //
+  const [savedMovies, setSavedMovies] = useState([]);
+  //  для работы с текущим массивом всех фильмов //
+  const [allMovies, setAllMovies] = useState([]);
+  //  для работы с текущим массивом найденных фильмов //
+  const [foundMovies, setFoundMovies] = useState([]);
+  //  для проверки наличия фильтра  //
+  const [isShortie, setIsShortie] = useState(false);  //
+  //  для работы с массивом фильмов отфильтрованных фильмов //
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  //  для работы с массивом отфильтрованных сохраненных фильмов //
+  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
+  //  для проверки наличия ошибки  //
+  const [isError, setIsError] = useState(false);
+  //  для работы с сообщением об ошибке  //
+  const [errorMessage, setErrorMessage] = useState('Что-то пошло не так... Попробуйте позже!');  //
+  const [savedMoviesCards, setSavedMoviesCards] = useState([]);
 
-  //  const [isError, setIsError] = useState(false);  //
-  //  const [errorMessage, setErrorMessage] = useState('Что-то пошло не так... Попробуйте позже!');  //
-  //  const [savedMoviesCards, setSavedMoviesCards] = useState([]);  //
+  const [searchMessage, setSearchMessage] = useState('');  //
+  const [savedSearchedMoviesCards, setSavedSearchedMoviesCards] = useState([]);
+  const [isSearched, setIsSearched] = useState(false);  //
 
-  //  const [isShort, setIsShort] = useState(false);  //
 
-  //  const [searchMessage, setSearchMessage] = useState('');  //
-  //  const [savedSearchedMoviesCards, setSavedSearchedMoviesCards] = useState([]);
-  //  const [isSearched, setIsSearched] = useState(false);  //
-
-/*
   const [requestRegisterError, setRequestRegisterError] = useState({
     isRequestError: false,
     messageRequestError: '',
@@ -67,31 +86,57 @@ const App = () => {
     isRequestError: false,
     messageRequestError: '',
   });
-*/
-
 
   useEffect(() => {
-    checkToken();
+    authToken();
   }, []);
+  */
 
-/*
+  /*
   useEffect(() => {
-      Promise.all([handleToken(),getMovies()])
+		const token = localStorage.getItem('token');
+		if (token) {
+			getUser(token)
+				.then(response => {
+					if (response) {
+						setLoggedIn(true);
+						setCurrentUser({ data: response });
+						setServerError('');
+					}
+				})
+				.catch(error => {
+					console.error(error);
+					setServerError(errorMessages.authorizationTokenError);
+				});
+
+			getSavedMovie(token)
+				.then(movies => {
+					movies && setSavedMovies(movies.filter(movie => movie.ownwer === currentUser._id));
+					movies && setFilteredMovies(movies.filter(movie => movie.ownwer === currentUser._id));
+				})
+				.catch(error => {
+					console.error(error);
+					setServerError(errorMessages.serverError);
+				});
+		}
+	}, [currentUser._id, isLoggedIn]);
+
+  useEffect(() => {
+      Promise.all([handleToken(),getAllMovies()])
       setUserLocation(location.pathname)
   }, []);
-*/
-/*
+
   const getMovies = () => {
-    MainApi.getSavedMovies()
+    getSavedMovies()
     .then((res) => {
       localStorage.setItem('savedMovies', JSON.stringify(res))
       localStorage.setItem('filteredSavedMovies', JSON.stringify(res));
       setSavedMovies(res)
     }).catch((err) => console.log(err))
   }
-*/
 
-/*
+
+
   useEffect(() => {
     if(loggedIn){
       history.push(userLocation);
@@ -109,10 +154,10 @@ const App = () => {
       }
     }
   }, [loggedIn, userLocation]);
-*/
+
 
   const handleToken = () => {
-    return checkToken()
+    return authToken()
       .then((res) => {
         if (res) {
           setLoggedIn(true);
@@ -121,49 +166,65 @@ const App = () => {
       }).catch((err) => console.log(err))
   };
 
-    //  Обработчик логина  //
+  //  Обработчик логина  //
   const handleLogin = (email, password) => {
-    return login(email, password).then((res) => {
-//        auth();
-//        setUserLocation('/movies')
-//        history.push('/movies')
+    return authLogin(email, password).then((res) => {
+        authLogin();
+        setUserLocation('/movies')
+        history.push('/movies')
     }).catch(()=>{
       alert('Неверный E-mail или пароль!')
     });
   };
 
-    //  Обработчик регистрации  //
+  //  Обработчик регистрации  //
 
-/*
-  const handleRegister = (data) => {
-    auth
-      .login(data)
-      .then((res) => {
-        if (res) {
-          handleLogin(data);
-        }
-      })
-      .catch((err) => {
-        console.log('Ошибка регистрации');
-        setRequestSignUpError({
-          isRequestError: true,
-          messageRequestError: err.message,
-        });
-      });
-  }
-*/
+  // const handleRegister = (data) => {
+  //   authRegister
+  //     .login(data)
+  //     .then((res) => {
+  //       if (res) {
+  //         handleLogin(data);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log('Ошибка регистрации');
+  //       setRequestSignUpError({
+  //         isRequestError: true,
+  //         messageRequestError: err.message,
+  //       });
+  //     });
+  // }
+
   const handleRegister = (email, name, password) => {
-    return register(email, name, password).then((res) => {
+    return authRegister(email, name, password).then((res) => {
       alert('Вы успешно зарегистрировались!')
       handleLogin(email, password);
     }).catch(()=> {
       alert('Что-то пошло не так...')
     });
   };
+  */
+
+  const [movies, setMovies] = useState([]);
+  const loggedIn = true;
+
+
+  useEffect(() => {
+    if (loggedIn) {
+      getAllMovies()
+        .then((data) => {
+          setMovies(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   return (
       <div className='page'>
-        <CurrentUserContext.Provider value={currentUserContext}>
+        {/* <CurrentUserContext.Provider value={currentUserContext}> */}
           <Switch>
             <Route exact path='/'>
               <Header loggedIn={loggedIn} />
@@ -171,19 +232,17 @@ const App = () => {
               <Footer />
             </Route>
 
-{/*
             <Route path='/movies'>
               <Header loggedIn={true} />
               <Preloader />
-              <Movies foundMovies={foundMovies} />
+              <Movies movies={movies} />
               <Footer />
             </Route>
-*/}
+{/*
             <ProtectedRoute
               component={Movies}
               exact path='/movies'
               loggedIn={loggedIn}
-/*
               isLoading={isLoading}
               movies={filteredMovies}
               searchMovie={searchMovie}
@@ -191,8 +250,8 @@ const App = () => {
               checkBookmark={checkBookmark}
               setRequestSearchError={setRequestSearchError}
               requestSearchError={requestSearchError}
-*/
             />
+*/}
 
             <Route exact path='/saved-movies'>
               <Header loggedIn={true} />
@@ -212,7 +271,7 @@ const App = () => {
             <Route exact path="/signup">
               {
                 () => loggedIn ? <Redirect to="/"/>
-                  : <Register onRegister={handleRegister}/>
+                  : <Register /* onRegister={handleRegister} */ />
               }
 
             </Route>
@@ -221,7 +280,7 @@ const App = () => {
               <NotFound />
             </Route>
           </Switch>
-        </CurrentUserContext.Provider>
+        {/* </CurrentUserContext.Provider> */}
       </div>
   );
 }
