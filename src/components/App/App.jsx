@@ -26,7 +26,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 //  import mainApi from '../../utils/MainApi.js';
 //  import moviesApi from '../../utils/MoviesApi';
 import {
-  setToken, editProfile, getSavedMovies, addMovie, removeMovie
+  editProfile, getSavedMovies, addMovie, removeMovie
 } from '../../utils/MainApi';
 import {getBeatFilms} from '../../utils/MoviesApi';
 //  import {checkToken, register, login} from '../../utils/auth';  //
@@ -139,7 +139,7 @@ const App = () => {
   // Обработка проверки токена и наличия авторизации юзера  //
   const handleToken = () => {
     const token = localStorage.getItem('token');
-    //  Если в лок.хранилище есть токен, авторизуем пользователя  //
+    //  Если в лок.хранилище есть токен, пробуем авторизовать пользователя  //
     if (token) {
       authToken(token)
         .then((res) => {
@@ -147,13 +147,13 @@ const App = () => {
           if (res) {
             setloggedIn(true);
             setCurrentUser({ name: res.name, email: res.email });
-            setToken(token);
+            // setToken(token);  //
             history.push(location.pathname);
           }
         })
         .catch((err) => {
           //  если ошибка, делаем логаут  //
-          console.log(`Возникла ошибка с токеном. ${err}`);
+          console.log(`ошибка авторизации с токеном. ${err}`);
           if (err.statusCode === 401) {
             handleLogout();
           }
@@ -264,6 +264,7 @@ const App = () => {
   }
 
   //  Получение сохраненных фильмов  //
+  //  Идем на сервер за сохраненным и записываем в Saved и FilteredSaved  //
   const getSavedMovieList = () => {
     getSavedMovies()
       .then((data) => {

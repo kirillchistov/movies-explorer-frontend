@@ -14,7 +14,7 @@ export const checkResponse = async (res) => {
   }
 };
 
-export const setToken = async (token) => {
+export const getToken = async (token) => {
   try {
   return await fetch(`${BASEURL}/users/me`, {
     method: "GET",

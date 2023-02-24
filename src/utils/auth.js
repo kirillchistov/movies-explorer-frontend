@@ -41,8 +41,8 @@ export const authLogin = async (email, password) => {
   .then(checkResponse);
 };
 
-export const authToken = (token) => {
-  return fetch(`${BASEURL}/users/me`, {
+export const authToken = async (token) => {
+  return await fetch(`${BASEURL}/users/me`, {
       method: 'GET',
       credentials: 'include',
       headers: {
