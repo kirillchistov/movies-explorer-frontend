@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './AuthForm.css';
 
 const AuthForm = ({
-/*  onChange,
+  onChange,
   onSubmit,
   isSubmitDisabled,
   formName,
@@ -16,9 +16,9 @@ const AuthForm = ({
   link,
   linkText,
   requestError,
-*/
+
 }) => {
-  const { isRequestError, messageRequestError } = requestError;
+  const { hasApiError, apiErrorMessage } = requestError;
 
   return (
     <main className='auth'>
@@ -109,10 +109,10 @@ const AuthForm = ({
         <div className='auth__submit'>
           <span
             className={`${
-              isRequestError ? 'auth__error auth__error_active' : 'auth__error'
+              hasApiError ? 'auth__error auth__error_active' : 'auth__error'
             }`}
           >
-            {messageRequestError}
+            {apiErrorMessage}
           </span>
           <button
             className='auth__button'

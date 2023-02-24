@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 //  Компонент со списокм фильмов - един для "Фильмы" и "Сохраненные"  //
 //  Используем стейты для подсчета числа карточек и ширины экрана  //
 //  По 3 на каждой строке на разрешении 1280 пикселей  //
@@ -22,11 +21,12 @@ import './MoviesCardList.css';
 //  import movies from '../../utils/moviesdb';  //
 
 const MoviesCardList = ({
-  onBookmark,
-  checkBookmark,
-  deleteBookmark,
+  onSave,
+  isMovieSaved,
+  deleteSaved,
   movies,
   }) => {
+
   const location = useLocation();
 
   //  состояния для вывода карточек в зависимости от размера экрана  //
@@ -60,6 +60,7 @@ const MoviesCardList = ({
   //  Вот что тут должно быть в зависимостях, чтобы не зацикливать?  //
   useEffect(() => {
     countCards();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //  Обрабатываем клик по кнопке "Еще"  //
@@ -74,7 +75,6 @@ const MoviesCardList = ({
       setMoviesToShow(moviesToShow + INCREASEONSMALLSCREEN);
     }
   }
-  console.log(movies);
 
   //  В сохраненных выбираем все фильмы, на основной - первые X по калькулятору moviesToShow //
   //  Под списком на главной "Фильмы" выводим кнопку "Еще", если карточек больше moviesToShow  //
@@ -85,9 +85,9 @@ const MoviesCardList = ({
           <MoviesCard
             key={item.id || item.movieId}
             card={item}
-            onBookmark={onBookmark}
-            checkBookmark={checkBookmark}
-            deleteBookmark={deleteBookmark}
+            onSave={onSave}
+            isMovieSaved={isMovieSaved}
+            deleteSaved={deleteSaved}
           />
         ))}
       </ul>

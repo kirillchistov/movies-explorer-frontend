@@ -5,7 +5,7 @@ import {BASEMOVIE} from '../../utils/constants';
 
 import './MoviesCard.css';
 
-const MoviesCard = ({ onBookmark, checkBookmark, deleteBookmark, card }) => {
+const MoviesCard = ({ onSave, isMovieSaved, deleteSaved, card }) => {
 
   //  проверяем на какой мы странице  //
   const location = useLocation();
@@ -17,7 +17,7 @@ const MoviesCard = ({ onBookmark, checkBookmark, deleteBookmark, card }) => {
   const buttonClassName = savedMoviesPage
     ? `element__bookmark element__bookmark_delete link`
     : `element__bookmark ${
-        checkBookmark(card)
+        isMovieSaved(card)
           ? 'element__bookmark_add'
           : 'element__bookmark_empty'
       } link`;
@@ -39,11 +39,11 @@ const MoviesCard = ({ onBookmark, checkBookmark, deleteBookmark, card }) => {
   const handleClickButton = () => {
     //  На главной "Фильмы" ставим лайк и нужную картинку  //
     if (allMoviesPage) {
-      onBookmark({ ...card, image: imageSource, thumbnail: imageSource });
+      onSave({ ...card, image: imageSource, thumbnail: imageSource });
     }
     //  На странице "Сохраненные" при клике убираем из закладок  //
     if (savedMoviesPage) {
-      deleteBookmark(card);
+      deleteSaved(card);
     }
   }
 

@@ -1,30 +1,51 @@
 //   Movies — компонент страницы с поиском по фильмам  //
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import './Movies.css';
-import Preloader from '../Preloader/Preloader';
+//  import { useEffect, useState } from 'react';
+import { useState } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import Preloader from '../Preloader/Preloader';
 import Search from '../Search/Search';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import { SHORTIE } from '../../utils/constants';
+//  import { SHORTIE } from '../../utils/constants';
+import {getBeatFilms} from '../../utils/MoviesApi';
 
 
-const Movies = ({ movies, searchMovie, onBookmark,
-  checkBookmark, setRequestSearchError, requestSearchError,
+import './Movies.css';
+
+/* const Movies = ({ movies, searchMovie, onSave,
+  isMovieSaved, setSearchError, requestSearchError,
   loggedIn, isLoading }) => {
 
   const location = useLocation();
-  const [isShortie, setIsShortie] = useState(false);
+*/
+const Movies = (onSave, isMovieSaved) => {
 
-  //  const [movies, setMovies] = useState([]);  //
+
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   //  const [shortMovies, setShortMovies] = useState([]);  //
   //  const [searchMovie, setSearchMovie] = useState('');  //
 
+  const searchMovie = () => {
+    setIsLoading(true);
+    getBeatFilms()
+      .then((data) => {
+        setMovies(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        console.log('успех');
+      });
+  }
+
+  /*
   //  Создеаем список для показа по состоянию фильтра - короткометражки или все  //
   const listMovies = isShortie ?
     movies.filter((item) => item.duration <= SHORTIE) : movies;
 
-  /*
   useEffect(() => {
 
     if (searchMovie) {
@@ -39,6 +60,7 @@ const Movies = ({ movies, searchMovie, onBookmark,
   },[searchMovie])
   */
 
+  /*
   //  При монтировании проверяем, есть уже есть фильтр в лок.хран., получаем его значение  //
   useEffect(() => {
     if (localStorage.getItem('shortMovie')) {
@@ -48,16 +70,16 @@ const Movies = ({ movies, searchMovie, onBookmark,
 
   //  При монтировании меняем ошибку поиска на '' или на "Ничего не найдено"  //
   useEffect(() => {
-    setRequestSearchError({
-      isRequestError: false,
-      messageRequestError: '',
+    setSearchError({
+      hasApiError: false,
+      apiErrorMessage: '',
     });
     listMovies.length === 0 &&
-      setRequestSearchError({
-        isRequestError: true,
-        messageRequestError: 'Ничего не найдено',
+      setSearchError({
+        hasApiError: true,
+        apiErrorMessage: 'Ничего не найдено',
       });
-  }, [isShortie, listMovies.length, setRequestSearchError]);
+  }, [isShortie, listMovies.length, setSearchError]);
 
   //  Обработчик переключателя фильтра "Короткометражки"  //
   //  Меняем состояние и значение в локальном хранилилще  //
@@ -65,23 +87,39 @@ const Movies = ({ movies, searchMovie, onBookmark,
     setIsShortie(!isShortie);
     localStorage.setItem('shortMovie', !isShortie);
   }
+  */
+
+  /*
+        <Search
+          searchMovie={searchMovie}
+          {// isShortie={isShortie} // }
+          {// onIsShortie={handleShortFilter} //}
+
+        />
+
+         <MoviesCardList
+          onSave={onSave}
+          isMovieSaved={isMovieSaved}
+          movies = {movies}
+        />
+
+  */
+
 
   return (
     <>
       <main className='content'>
         <Search
           searchMovie={searchMovie}
-          isShortie={isShortie}
-          onIsShortie={handleShortFilter}
-
         />
         <ErrorMessage />
-        {isLoading && <Preloader />}
+        {/*isLoading && <Preloader />*/}
 
         <MoviesCardList
-          onBookmark={onBookmark}
-          checkBookmark={checkBookmark}
-          movies = {listMovies}
+          onSave={onSave}
+          isMovieSaved={isMovieSaved}
+          movies = {movies}
+          isLoading = {isLoading}
         />
 
       </main>

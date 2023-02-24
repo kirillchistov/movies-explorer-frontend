@@ -17,7 +17,7 @@ const checkResponse = async (res) => {
 }
 
 //  Получаем сразу все фильмы с сервера   //
-export const getAllMovies = async () => {
+export const getBeatFilms = async () => {
   try {
     const movies = await fetch(MOVIESURL, {
       method: "GET",
