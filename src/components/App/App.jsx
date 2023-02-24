@@ -1,6 +1,5 @@
 //  App — корневой компонент приложения, его создаёт CRA  //
 //  Пока отключим линтер про забытые зависимости в хуках  //
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import {
   Redirect,
@@ -36,47 +35,134 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 import './App.css';
 
-//  Компонент приложения с хуками, состояниями и эффектами жизненного цикла  //
-//  Стейты авторизации, прелоудера, ошибок, стартового набора фильмов, поиска и т.д.  //
 const App = () => {
+  //  Хуки для работы с роутингом  //
   const history = useHistory();
   const location = useLocation();
 
+  //  Состояние авторизации  //
   const [loggedIn, setloggedIn] = useState(false);
 
+  //  Состояние с данными пользователя для контекст  //
   const [currentUser, setCurrentUser] = useState({
     name: 'Kirill',
     email: 'kirill.v.chistov@yandex.ru',
   });
 
+  //  Состояние прелоудера для показа при загрузке данных  //
   const [isLoading, setIsLoading] = useState(true);
 
-  const [apiRegisterError, setapiRegisterError] = useState({
-    hasSearchError: false,
-    messageRequestError: '',
-  });
-  const [apiLoginError, setapiLoginError] = useState({
-    hasSearchError: false,
-    messageRequestError: '',
-  });
-  const [requestEditProfileError, setRequestEditProfileError] = useState({
-    hasSearchError: false,
-    messageRequestError: '',
-  });
-
+  //  Состояния для работы со списками фильмов и поиском  //
+  //  Вся коллекция  //
   const [allMovies, setAllMovies] = useState([]);
+  //  Коллекция найденных поиском  //
   const [filteredMovies, setFilteredMovies] = useState([]);
+  //  Коллекция всех сохраненных  //
   const [savedMovies, setSavedMovies] = useState([]);
+  //  Коллекция сохраненных короткометражек //
   const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
 
-  const [requestSearchError, setSearchError] = useState({
-    hasSearchError: false,
-    messageRequestError: '',
+  //  Состояние ошибок при работе с MainApi  //
+  //  ошибка логина  //
+  const [apiLoginError, setApiLoginError] = useState({
+    isApiError: false,
+    apiErrorMessage: '',
+  });
+  //  ошибка регистрации  //
+  const [apiRegisterError, setApiRegisterError] = useState({
+    isApiError: false,
+    apiErrorMessage: '',
+  });
+  //  ошибка обновления профиля  //
+  const [apiEditProfileError, setApiEditProfileError] = useState({
+    isApiError: false,
+    apiErrorMessage: '',
   });
 
-  //  Обработчик логина  //
+  //  ошибка поиска по фильмам  //
+  const [apiSearchError, setApiSearchError] = useState({
+    isApiError: false,
+    apiErrorMessage: '',
+  });
 
+  //  Хуки при визуализаци и обновлении данных компонента  //
+  //  При монтировании компонента запускаем обработку токена  //
+  useEffect(() => {
+    handleToken();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //  Хук поиска и фильтрации фильмов  //
+  useEffect(() => {
+    //  Обнуляем ошибку обращения к API  //
+    setApiSearchError({
+      isApiError: false,
+      apiErrorMessage: '',
+    });
+    //  Если юзер авторизован, получаем фильмы от MainAPI  //
+    if (loggedIn) {
+      getAllMovies();
+      getSavedMovieList();
+      //  Если в лок.хранилище есть найденные фильмы, записываем в отфильтрованные  //
+      if (localStorage.getItem('searchMovies')) {
+        setFilteredMovies(JSON.parse(localStorage.getItem('searchMovies')));
+        if (JSON.parse(localStorage.getItem('searchMovies')).length === 0) {
+          setApiSearchError({
+            isApiError: true,
+            apiErrorMessage: 'Ничего не найдено',
+          });
+        }
+        setIsLoading(false);
+      }
+    }
+  }, [loggedIn]);
+
+  //  Хук для первой загрузки страницы Фильмы  //
+  useEffect(() => {
+    if (location.pathname === '/movies') {
+      if (!localStorage.getItem('searchMovies')) {
+        setApiSearchError({
+          isApiError: false,
+          apiErrorMessage: '',
+        });
+      }
+    }
+    if (location.pathname === '/saved-movies') {
+      setApiSearchError({
+        isApiError: false,
+        apiErrorMessage: '',
+      });
+      setFilteredSavedMovies(savedMovies);
+    }
+  }, [location, savedMovies]);
+
+  // Обработка проверки токена и наличия авторизации юзера  //
+  const handleToken = () => {
+    const token = localStorage.getItem('token');
+    //  Если в лок.хранилище есть токен, авторизуем пользователя  //
+    if (token) {
+      authToken(token)
+        .then((res) => {
+          //  Если все ОК, авторизуем и задаем контекст юзера, url не меняем  //
+          if (res) {
+            setloggedIn(true);
+            setCurrentUser({ name: res.name, email: res.email });
+            setToken(token);
+            history.push(location.pathname);
+          }
+        })
+        .catch((err) => {
+          //  если ошибка, делаем логаут  //
+          console.log(`Возникла ошибка с токеном. ${err}`);
+          if (err.statusCode === 401) {
+            handleLogout();
+          }
+        });
+    }
+  }
+  //  Обработка логина  //
   const handleLogin = (data) => {
+  //  Проверяем и записываем токен, открываем Фильмы  //
     authLogin(data)
       .then((res) => {
         if (res.token) {
@@ -91,54 +177,15 @@ const App = () => {
         if (err.statusCode === 400) {
           err.message = 'Вы ввели неправильный логин или пароль';
         }
-        setapiLoginError({
-          hasSearchError: true,
-          messageRequestError: err.message,
+        setApiLoginError({
+          isApiError: true,
+          apiErrorMessage: err.message,
         });
       });
   }
 
-
-  //  Обработчик логина  //
-  /*
-  const handleLogin = (email, password) => {
-    return authLogin(email, password).then((res) => {
-        authLogin();
-        setUserLocation('/movies')
-        history.push('/movies')
-    }).catch(()=>{
-      alert('Неверный E-mail или пароль!')
-    });
-  };
-  */
-
-  // Обработчик проверки токена  //
-  const handleToken = () => {
-    // console.log('check');
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      authToken(token)
-        .then((res) => {
-          if (res) {
-            setloggedIn(true);
-            setCurrentUser({ name: res.name, email: res.email });
-            setToken(token);
-            history.push(location.pathname);
-          }
-        })
-        .catch((err) => {
-          console.log(`Возникла ошибка с токеном. ${err}`);
-          console.log(err);
-          if (err.statusCode === 401) {
-            handleLogout();
-          }
-        });
-      // return;
-    }
-    // handleLogout();
-  }
-
-  //  Обработчик регистрации  //
+  //  Обработка регистрации  //
+  //  Отправляем регистрацию на сервер, если ОК, авторизуем  //
   const handleRegister = (data) => {
     authRegister(data)
       .then((res) => {
@@ -148,14 +195,37 @@ const App = () => {
       })
       .catch((err) => {
         console.log('Ошибка регистрации');
-        setapiRegisterError({
-          hasSearchError: true,
-          messageRequestError: err.message,
+        setApiRegisterError({
+          isApiError: true,
+          apiErrorMessage: err.message,
         });
       });
   }
 
-  //  Обработчик выхода из аккаунта  //
+  //  Обработчик редактирования профиля  //
+  //  Отправляем новые данные на сервер, если ответ ОК, меняем контекст  //
+  const handleUpdateProfile= (data) => {
+    editProfile(data)
+      .then((res) => {
+        if (res) {
+          setCurrentUser({ name: res.name, email: res.email });
+          setApiEditProfileError({
+            isApiError: true,
+            apiErrorMessage: 'Данные обновлены',
+          });
+        }
+      })
+      .catch((err) => {
+        console.log('Ошибка обновления профиля');
+        setApiEditProfileError({
+          isApiError: true,
+          apiErrorMessage: err.message,
+        });
+      });
+  }
+
+  //  Обработка выхода из аккаунта  //
+  //  Очищаем авторизацию, лок. хранилище и контекст юзера, открываем главную  //
   const handleLogout = () => {
     localStorage.clear();
     setloggedIn(false);
@@ -169,71 +239,6 @@ const App = () => {
     });
     history.push('/');
   }
-
-  //  Обработчик редактирования профиля  //
-  const handleUpdateProfile= (data) => {
-    editProfile(data)
-      .then((res) => {
-        if (res) {
-          setCurrentUser({ name: res.name, email: res.email });
-          setRequestEditProfileError({
-            hasSearchError: true,
-            messageRequestError: 'Данные обновлены',
-          });
-        }
-      })
-      .catch((err) => {
-        console.log('Ошибка обновления профиля');
-        setRequestEditProfileError({
-          hasSearchError: true,
-          messageRequestError: err.message,
-        });
-      });
-  }
-
-  useEffect(() => {
-    handleToken();
-  }, []);
-
-  //  Хук поиска по фильмам  //
-  useEffect(() => {
-    setSearchError({
-      hasSearchError: false,
-      messageRequestError: '',
-    });
-    if (loggedIn) {
-      getAllMovies();
-      getSavedMovieList();
-      if (localStorage.getItem('searchMovies')) {
-        setFilteredMovies(JSON.parse(localStorage.getItem('searchMovies')));
-        if (JSON.parse(localStorage.getItem('searchMovies')).length === 0) {
-          setSearchError({
-            hasSearchError: true,
-            messageRequestError: 'Ничего не найдено',
-          });
-        }
-        setIsLoading(false);
-      }
-    }
-  }, [loggedIn]);
-
-  useEffect(() => {
-    if (location.pathname === '/movies') {
-      if (!localStorage.getItem('searchMovies')) {
-        setSearchError({
-          hasSearchError: false,
-          messageRequestError: '',
-        });
-      }
-    }
-    if (location.pathname === '/saved-movies') {
-      setSearchError({
-        hasSearchError: false,
-        messageRequestError: '',
-      });
-      setFilteredSavedMovies(savedMovies);
-    }
-  }, [location, savedMovies]);
 
   //  Получение коллекции всех фильмов  //
   const getAllMovies = () => {
@@ -249,9 +254,9 @@ const App = () => {
         })
         .catch((err) => {
           console.log(err);
-          setSearchError({
-            hasSearchError: true,
-            messageRequestError:
+          setApiSearchError({
+            isApiError: true,
+            apiErrorMessage:
               'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз',
           });
         });
@@ -287,7 +292,7 @@ const App = () => {
   }
 
   // Удаление из избранного
-  const handlerRemoveSavedMovies = (card) => {
+  const handleDeleteMovies = (card) => {
     savedMovies.forEach((i) => {
       if (i.movieId === card.id) {
         removeSavedMovies(i);
@@ -314,7 +319,7 @@ const App = () => {
     if (!onCheckBookmark(card)) {
       handleAddSavedMovies(card);
     } else {
-      handlerRemoveSavedMovies(card);
+      handleDeleteMovies(card);
     }
   }
 
@@ -328,21 +333,21 @@ const App = () => {
     const movies = allMoviesPage ? allMovies : savedMovies;
 
     setIsLoading(true);
-    setSearchError({ hasSearchError: false, messageRequestError: '' });
+    setApiSearchError({ isApiError: false, apiErrorMessage: '' });
 
     const filter = movies.filter((i) =>
       i.nameRU.toLowerCase().includes(searchText.toLowerCase()),
     );
 
     if (savedMoviesPage) {
-      setSearchError({
-        hasSearchError: false,
-        messageRequestError: '',
+      setApiSearchError({
+        isApiError: false,
+        apiErrorMessage: '',
       });
       if (!searchText) {
-        setSearchError({
-          hasSearchError: true,
-          messageRequestError: 'Нужно ввести ключевое слово',
+        setApiSearchError({
+          isApiError: true,
+          apiErrorMessage: 'Нужно ввести ключевое слово',
         });
         // return;
       }
@@ -351,27 +356,27 @@ const App = () => {
 
     if (allMoviesPage) {
       if (!searchText) {
-        setSearchError({
-          hasSearchError: true,
-          messageRequestError: 'Нужно ввести ключевое слово',
+        setApiSearchError({
+          isApiError: true,
+          apiErrorMessage: 'Нужно ввести ключевое слово',
         });
         localStorage.removeItem('searchMovies');
         setFilteredMovies([]);
         setIsLoading(false);
         return;
       }
-      setSearchError({
-        hasSearchError: false,
-        messageRequestError: '',
+      setApiSearchError({
+        isApiError: false,
+        apiErrorMessage: '',
       });
       setFilteredMovies(filter);
       localStorage.setItem('searchMovies', JSON.stringify(filter));
     }
 
     if (filter.length === 0) {
-      setSearchError({
-        hasSearchError: true,
-        messageRequestError: 'Ничего не найдено',
+      setApiSearchError({
+        isApiError: true,
+        apiErrorMessage: 'Ничего не найдено',
       });
       setIsLoading(false);
     }
@@ -398,8 +403,8 @@ const App = () => {
             searchMovie={searchMovie}
             onBookmark={handleBookmark}
             onCheckBookmark={onCheckBookmark}
-            setSearchError={setSearchError}
-            requestSearchError={requestSearchError}
+            setApiSearchError={setApiSearchError}
+            apiSearchError={apiSearchError}
           />
 
           <ProtectedRoute
@@ -411,8 +416,8 @@ const App = () => {
             movies={filteredSavedMovies}
             searchMovie={searchMovie}
             removeSavedMovies={removeSavedMovies}
-            setSearchError={setSearchError}
-            requestSearchError={requestSearchError}
+            setApiSearchError={setApiSearchError}
+            apiSearchError={apiSearchError}
           />
 
           <ProtectedRoute
@@ -422,7 +427,7 @@ const App = () => {
             loggedIn={loggedIn}
             onLogout={handleLogout}
             onUpdateProfile={handleUpdateProfile}
-            requestEditProfileError={requestEditProfileError}
+            apiEditProfileError={apiEditProfileError}
           />
 
           <Route path='/signin'>

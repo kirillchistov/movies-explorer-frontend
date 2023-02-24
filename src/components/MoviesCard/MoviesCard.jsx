@@ -1,4 +1,5 @@
 //  Компонент карточки фильма  //
+//  Название на русском, хроно, Like-кнопка картинка со ссылкой на трейлер  //
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import {BASEMOVIE} from '../../utils/constants';
@@ -27,10 +28,10 @@ const MoviesCard = ({ onSave, isMovieSaved, deleteSaved, card }) => {
     : card.image;
 
   //  Приводим хронометраж к формату "чч:мм" //
-  //  Минуты делим на 60 с округлением вниз, получаем целые часы  //
-  //  Остаток минут от деления на 60 запиысываем в минуты  //
   const duration = () => {
+    //  Минуты делим на 60 с округлением вниз, получаем целые часы  //
     const hours = Math.floor(card.duration / 60);
+  //  Остаток минут от деления на 60 запиысываем в минуты  //
     const minutes = card.duration % 60;
     return `${hours}ч ${minutes}м`;
   }
@@ -47,6 +48,7 @@ const MoviesCard = ({ onSave, isMovieSaved, deleteSaved, card }) => {
     }
   }
 
+  //  разметка элемента списка со структурой карточки фильма  //
   return (
     <li className='element'>
       <div className='element__description'>

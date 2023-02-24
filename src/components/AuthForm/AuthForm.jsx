@@ -18,7 +18,7 @@ const AuthForm = ({
   requestError,
 
 }) => {
-  const { hasApiError, apiErrorMessage } = requestError;
+  const { isApiError, apiErrorMessage } = requestError;
 
   return (
     <main className='auth'>
@@ -109,7 +109,7 @@ const AuthForm = ({
         <div className='auth__submit'>
           <span
             className={`${
-              hasApiError ? 'auth__error auth__error_active' : 'auth__error'
+              isApiError ? 'auth__error auth__error_active' : 'auth__error'
             }`}
           >
             {apiErrorMessage}

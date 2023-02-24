@@ -10,31 +10,35 @@ const Profile = ({
   loggedIn,
   onLogout,
   onUpdateProfile,
-  requestEditProfileError,
-}) => {
-  const currentUser = useContext(CurrentUserContext);
-  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation('');
+  apiEditProfileError,
+  }) => {
 
+  //  Получаем контекст текущего пользователя  //
+  const currentUser = useContext(CurrentUserContext);
+  //  Хук для обработки и валидации формы редактирования  //
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation('');
+  //  Состояние отключения поля ввода (вкл. при редактировании)  //
   const [isInputDisabled, setIsInputDisabled] = useState(true);
+  //  Состояние отключения кнопки сохранить  //
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const [isRequestError, setIsRequestError] = useState(false);
-  const [messageRequestError, setMesageRequestError] = useState('');
+  const [isApiError, setIsApiError] = useState(false);
+  const [apiErrorMessage, setApiErrorMessage] = useState('');
 
   const handleEditProfile = () => {
     resetForm(currentUser, {}, false);
-    setIsRequestError(false);
-    setMesageRequestError('');
+    setIsApiError(false);
+    setApiErrorMessage('');
     setIsInputDisabled(false);
     setIsEdit(!isEdit);
   }
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    setIsRequestError(false);
-    setMesageRequestError('');
+    setIsApiError(false);
+    setApiErrorMessage('');
     setIsInputDisabled(true);
     setIsSubmitDisabled(true);
     const newValues = {
@@ -55,13 +59,13 @@ const Profile = ({
   }, [values.name, values.email, isValid, currentUser.name, currentUser.email]);
 
   useEffect(() => {
-    setIsRequestError(requestEditProfileError.isRequestError);
-    setMesageRequestError(requestEditProfileError.messageRequestError);
-  }, [requestEditProfileError]);
+    setIsApiError(apiEditProfileError.isApiError);
+    setApiErrorMessage(apiEditProfileError.apiErrorMessage);
+  }, [apiEditProfileError]);
 
   useEffect(() => {
-    setIsRequestError(false);
-    setMesageRequestError('');
+    setIsApiError(false);
+    setApiErrorMessage('');
   }, []);
 
   return (
@@ -131,12 +135,12 @@ const Profile = ({
           <div className='profile__submit'>
             <span
               className={`${
-                isRequestError
+                isApiError
                   ? 'profile__error profile__error_active'
                   : 'profile__error'
               }`}
             >
-              {messageRequestError}
+              {apiErrorMessage}
             </span>
             {isEdit ? (
               <button
