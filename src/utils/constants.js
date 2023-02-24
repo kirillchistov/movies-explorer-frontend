@@ -1,5 +1,6 @@
-//  const BASEURL = 'https://api.christoff.nomoredomains.club';
-const BASEURL = 'http://localhost:3003';
+//  Перенести все реквизиты в .env, учесть настройку под react app  //
+const BASEURL = 'https://api.christoff.nomoredomains.club';
+//  const BASEURL = 'http://localhost:3003';  //
 const MOVIESURL = 'https://api.nomoreparties.co/beatfilm-movies';
 const BASEMOVIE = 'https://api.nomoreparties.co/'
 
@@ -19,19 +20,19 @@ const ERRORS = {
 
 //  Константы для экранов и пагинации - ленты фильмов  //
 //  1280px — 12 фильмов, по 3 в ряд. «Ещё» + 3 фильма  //
-//  768px — 8 фильмов по 2 в ряд. «Ещё» + 2 фильма  //
-//  320px - 480px — 5 фильмов по 1 в ряд. «Ещё» + 2 фильма  //
 
 const LARGESCREEN = 1280;
-const MIDDLESCREEN = 768;
-const SMALLSCREEN = 480;
-
 const DEFAULTONLARGESCREEN = 12;
-const DEFAULTONMIDDLESCREEN = 8;
-const DEFAULTONSMALLSCREEN = 5;
-
 const INCREASEONLARGESCREEN = 3;
+
+//  768px — 8 фильмов по 2 в ряд. «Ещё» + 2 фильма  //
+const MIDDLESCREEN = 768;
+const DEFAULTONMIDDLESCREEN = 8;
 const INCREASEONMIDDLESCREEN = 2;
+
+//  320px - 480px — 5 фильмов по 1 в ряд. «Ещё» + 2 фильма  //
+const SMALLSCREEN = 480;
+const DEFAULTONSMALLSCREEN = 5;
 const INCREASEONSMALLSCREEN = 2;
 
 export {
@@ -45,9 +46,9 @@ export {
   MIDDLESCREEN,
   SMALLSCREEN,
   DEFAULTONLARGESCREEN,
-  DEFAULTONMIDDLESCREEN,
-  DEFAULTONSMALLSCREEN,
   INCREASEONLARGESCREEN,
+  DEFAULTONMIDDLESCREEN,
   INCREASEONMIDDLESCREEN,
+  DEFAULTONSMALLSCREEN,
   INCREASEONSMALLSCREEN,
 };

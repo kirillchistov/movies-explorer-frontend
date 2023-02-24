@@ -15,7 +15,7 @@ const checkResponse = async (res) => {
 
 //  Функция с пост-запросом на создание регистрации  //
 //  потом сделаем async try await  //
-export const authRegister = async (email, password, name) => {
+export const authRegister = async ({email, password, name}) => {
   const user = await fetch(`${BASEURL}/signup`, {
     method: "POST",
     headers: {
@@ -29,10 +29,10 @@ export const authRegister = async (email, password, name) => {
 //  Функция с пост-запросом на авторизацию  //
 //  потом сделаем async try await  //
 
-export const authLogin = async (email, password) => {
+export const authLogin = async ({email, password}) => {
   return await fetch(`${BASEURL}/signin`, {
       method: 'POST',
-      credentials: 'include',
+//      credentials: 'include',  //
       headers: {
           "Content-Type": "application/json"
       },

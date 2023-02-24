@@ -31,7 +31,7 @@ export const getToken = async (token) => {
 
 export const editProfile = async (name, email) => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("jwt");
     return await fetch(`${BASEURL}/users/me`, {
       method: "PATCH",
       headers: {
@@ -49,7 +49,7 @@ export const editProfile = async (name, email) => {
 
 export const getSavedMovies = async () => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("jwt");
     return await fetch(`${BASEURL}/movies`, {
       method: 'GET',
       credentials: 'include',
@@ -66,7 +66,7 @@ export const getSavedMovies = async () => {
 
 export const addMovie = async (data) => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('jwt');
     return await fetch(`${BASEURL}/movies`, {
       method: 'POST',
       headers: {
@@ -95,7 +95,7 @@ export const addMovie = async (data) => {
 
 export const removeMovie = async (movieId) => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('jwt');
     return await fetch(`${BASEURL}/movies/${movieId}`, {
       method: 'DELETE',
       headers: {

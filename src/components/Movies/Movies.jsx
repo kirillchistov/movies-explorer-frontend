@@ -1,6 +1,7 @@
 //   Movies — компонент страницы с поиском по фильмам  //
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import Header from '../Header/Header';
 import Preloader from '../Preloader/Preloader';
 import Search from '../Search/Search';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -12,7 +13,7 @@ import { SHORTIE } from '../../utils/constants';
 import './Movies.css';
 
 const Movies = ({ movies, searchMovie, onSave,
-  isMovieSaved, setApiError, apiSearchError,
+  isMovieSaved, setApiSearchError, apiSearchError,
   loggedIn, isLoading }) => {
 
   const location = useLocation();
@@ -68,16 +69,16 @@ const Movies = ({ movies, searchMovie, onSave,
 
   //  При монтировании меняем ошибку поиска на '' или "Ничего не найдено"  //
   useEffect(() => {
-    setApiError({
+    setApiSearchError({
       isApiError: false,
       apiErrorMessage: '',
     });
     listMovies.length === 0 &&
-      setApiError({
+      setApiSearchError({
         isApiError: true,
         apiErrorMessage: 'Ничего не найдено',
       });
-  }, [isShortie, listMovies.length, setApiError]);
+  }, [isShortie, listMovies.length, setApiSearchError]);
 
   //  Обработчик переключателя фильтра "Короткометражки"  //
   //  Меняем состояние и значение в локальном хранилилще  //
@@ -89,6 +90,7 @@ const Movies = ({ movies, searchMovie, onSave,
   //  Поиск с фильтром + блок с ошибкой поиска, результаты поиска с фильтром  //
   return (
     <>
+      <Header loggedIn={loggedIn} />
       <main className='content'>
         <Search
           onIsShortie={handleShortFilter}

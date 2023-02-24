@@ -138,7 +138,7 @@ const App = () => {
 
   // Обработка проверки токена и наличия авторизации юзера  //
   const handleToken = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwt');
     //  Если в лок.хранилище есть токен, пробуем авторизовать пользователя  //
     if (token) {
       authToken(token)
@@ -166,7 +166,7 @@ const App = () => {
     authLogin(data)
       .then((res) => {
         if (res.token) {
-          localStorage.setItem('token', res.token);
+          localStorage.setItem('jwt', res.token);
           handleToken();
           history.push('/movies');
         }
@@ -317,14 +317,14 @@ const App = () => {
 
   //  Обработка избранного - проверка наличия закладки  //
   const handleBookmark = (card) => {
-    if (!onCheckBookmark(card)) {
+    if (!isMovieSaved(card)) {
       handleAddSavedMovies(card);
     } else {
       handleDeleteMovies(card);
     }
   }
 
-  const onCheckBookmark = (card) => {
+  const isMovieSaved = (card) => {
     return savedMovies.some((i) => i.movieId === card.id);
   }
   //  Поиск по фильмам  //
@@ -402,8 +402,8 @@ const App = () => {
             isLoading={isLoading}
             movies={filteredMovies}
             searchMovie={searchMovie}
-            onBookmark={handleBookmark}
-            onCheckBookmark={onCheckBookmark}
+            onSave={handleBookmark}
+            isMovieSaved={isMovieSaved}
             setApiSearchError={setApiSearchError}
             apiSearchError={apiSearchError}
           />

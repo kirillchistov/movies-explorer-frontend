@@ -2,20 +2,21 @@
 //  Применяем фильтр по короткометражкам isShortie //
 
 import React from 'react';
-import './SavedMovies.css';
-
+import Header from '../Header/Header';
 import Search from '../Search/Search';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import saved from '../../utils/saved';
+import './SavedMovies.css';
 
 const SavedMovies = () => {
 
   return (
     <>
-      <main className='content'>
-        <Search />
-        <MoviesCardList cards={saved} />
-      </main>
+      <Header />
+        <main className='content'>
+          <Search />
+          <MoviesCardList cards={saved} />
+        </main>
     </>
   );
 }

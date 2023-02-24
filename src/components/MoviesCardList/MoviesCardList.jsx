@@ -81,7 +81,7 @@ const MoviesCardList = ({
   return (
     <section className='movies'>
       <ul className='movies__elements'>
-        {movies.slice(0, savedMoviesPath ? movies.length : moviesToShow).map((item) => (
+        {movies?.slice(0, savedMoviesPath ? movies?.length : moviesToShow)?.map((item) => (
           <MoviesCard
             key={item.id || item.movieId}
             card={item}
