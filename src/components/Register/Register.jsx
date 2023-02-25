@@ -33,7 +33,7 @@ const Register = ({ onRegister, apiRegisterError }) => {
         onChange={handleChange}
         value={values}
         error={errors}
-        requestError={apiRegisterError}
+        apiError={apiRegisterError}
       />
     </>
   );

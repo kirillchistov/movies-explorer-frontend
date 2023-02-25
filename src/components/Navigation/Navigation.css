@@ -5,6 +5,7 @@
 }
 
 .navigation__item {
+  color: var(--color-black);
   font-size: 13px;
   text-decoration: none;
   line-height: 18px;

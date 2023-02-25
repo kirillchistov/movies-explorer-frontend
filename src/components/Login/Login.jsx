@@ -32,7 +32,7 @@ const Login = ({ onLogIn, apiLoginError }) => {
         onChange={handleChange}
         value={values}
         error={errors}
-        requestError={apiLoginError}
+        apiError={apiLoginError}
       />
     </>
   );

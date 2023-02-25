@@ -15,10 +15,10 @@ const AuthForm = ({
   text,
   link,
   linkText,
-  requestError,
+  apiError,
 
 }) => {
-  const { isApiError, apiErrorMessage } = requestError;
+  const { isApiError, apiErrorMessage } = apiError;
 
   return (
     <main className='auth'>

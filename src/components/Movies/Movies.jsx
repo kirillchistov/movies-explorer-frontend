@@ -4,27 +4,22 @@ import { useLocation } from 'react-router-dom';
 import Header from '../Header/Header';
 import Preloader from '../Preloader/Preloader';
 import Search from '../Search/Search';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { SHORTIE } from '../../utils/constants';
 //  import {getBeatFilms} from '../../utils/MoviesApi';
 
-
 import './Movies.css';
 
-const Movies = ({ movies, searchMovie, onSave,
-  isMovieSaved, setApiSearchError, apiSearchError,
-  loggedIn, isLoading }) => {
+const Movies = ({ loggedIn, isLoading, movies, searchMovie, onSave,
+  isMovieSaved, setApiSearchError, apiSearchError }) => {
 
   const location = useLocation();
   const [isShortie, setIsShortie] = useState(false);
 
-  // const [movies, setMovies] = useState([]);  //
-  // const [isLoading, setIsLoading] = useState(false);  //
-  //  const [shortMovies, setShortMovies] = useState([]);  //
-  //  const [searchMovie, setSearchMovie] = useState('');  //
-
+  //  Подняли стейты в App  //
+  //  Получаем список фильмов через пропсы  //
   /*
   const getMovies = () => {
     setIsLoading(true);
@@ -33,16 +28,16 @@ const Movies = ({ movies, searchMovie, onSave,
         setMovies(data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`Ошибка получения фильмов: ${err}`);
       })
       .finally(() => {
         setIsLoading(false);
-        console.log('успех');
+        console.log('загрузка данных завершена');
       });
   }
   */
 
-  //  Создеаем список для показа по состоянию фильтра - короткометражки или все  //
+  //  Создаем список для показа по состоянию фильтра - короткометражки или все  //
   const displayMovies = isShortie ?
     movies.filter((item) => item.duration <= SHORTIE) : movies;
 
@@ -53,6 +48,8 @@ const Movies = ({ movies, searchMovie, onSave,
     }
   }, [location]);
 
+
+  //  Вынесли функцию поиска по фильмам searchMovie в App  //
   /*
   useEffect(() => {
     if (searchMovie) {
@@ -87,7 +84,8 @@ const Movies = ({ movies, searchMovie, onSave,
     localStorage.setItem('shortMovie', !isShortie);
   }
 
-  //  Поиск с фильтром + блок с ошибкой поиска, результаты поиска с фильтром  //
+  //  Шапка, Поиск с фильтром, Блок с ошибкой, Результаты поиска, Подвал  //
+  //  На рефакторе можно объединить с "Сохраненными" через HOC //
   return (
     <>
       <Header loggedIn={loggedIn} />

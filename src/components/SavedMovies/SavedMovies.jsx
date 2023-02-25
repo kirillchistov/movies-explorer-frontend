@@ -42,6 +42,7 @@ const SavedMovies = ({
     localStorage.setItem('shortMovie', !isShortie);
   }
 
+  //  Шапка, Поиск с фильтром, Блок с ошибкой, Результаты поиска, Подвал  //
   return (
     <>
       <Header loggedIn={loggedIn} />

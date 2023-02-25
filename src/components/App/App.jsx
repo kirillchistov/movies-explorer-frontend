@@ -123,7 +123,8 @@ const App = () => {
     }
   }, [location, savedMovies]);
 
-  // Обработка проверки токена и наличия авторизации юзера  //
+  //  -------  Обработчики  -------  //
+  //  Обработка проверки токена и наличия авторизации юзера  //
   const handleToken = () => {
     const token = localStorage.getItem('jwt');
     //  Если в лок.хранилище есть токен, пробуем авторизовать пользователя  //
@@ -139,8 +140,8 @@ const App = () => {
           }
         })
         .catch((err) => {
-          //  если ошибка, делаем логаут  //
           console.log(`ошибка авторизации с токеном. ${err}`);
+          //  если ошибка 401, делаем логаут  //
           if (err.statusCode === 401) {
             handleLogout();
           }
@@ -149,7 +150,7 @@ const App = () => {
   }
   //  Обработка логина  //
   const handleLogin = (data) => {
-  //  Проверяем и записываем токен, открываем Фильмы  //
+    //  Проверяем и записываем токен, открываем Фильмы  //
     authLogin(data)
       .then((res) => {
         if (res.token) {
@@ -159,8 +160,7 @@ const App = () => {
         }
       })
       .catch((err) => {
-        console.log('Ошибка авторизации');
-        console.log(err);
+        console.log(`Ошибка авторизации: ${err}`);
         if (err.statusCode === 400) {
           err.message = 'Вы ввели неправильный логин или пароль';
         }
@@ -181,7 +181,7 @@ const App = () => {
         }
       })
       .catch((err) => {
-        console.log('Ошибка регистрации');
+        console.log(`Ошибка регистрации: ${err}`);
         setApiRegisterError({
           isApiError: true,
           apiErrorMessage: err.message,
@@ -203,7 +203,7 @@ const App = () => {
         }
       })
       .catch((err) => {
-        console.log('Ошибка обновления профиля');
+        console.log(`Ошибка обновления профиля: ${err}`);
         setApiEditProfileError({
           isApiError: true,
           apiErrorMessage: err.message,
@@ -240,7 +240,7 @@ const App = () => {
           setAllMovies(data);
         })
         .catch((err) => {
-          console.log(err);
+          console.log(`Ошибка получения коллекции: ${err}`);
           setApiSearchError({
             isApiError: true,
             apiErrorMessage:
@@ -250,46 +250,52 @@ const App = () => {
     }
   }
 
-  //  Получение сохраненных фильмов  //
-  //  Идем на сервер за сохраненным и записываем в Saved и FilteredSaved  //
+  //  Получение коллекции сохраненных фильмов  //
   const getSavedMovieList = () => {
+    //  Идем на сервер за сохраненным и записываем в Saved и FilteredSaved  //
     getSavedMovies()
       .then((data) => {
         setSavedMovies(data);
         setFilteredSavedMovies(data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`Ошибка получения сохраненных: ${err}`);
       });
   }
 
-  //  Обработчик сохранения избранных фильмов  //
+  //  Обработчка клика для добавления в сохраненные  //
   const handleAddSavedMovies = (card) => {
+    //  Вызываем функцию добавления в сохраненные (можно бы объединить)  //
     addSavedMovies(card);
   }
 
+  //  Функция добавления фильма в сохраненные  //
   const addSavedMovies = (card) => {
+    //  Вызываем метода API и добавляем данные в оба массива  //
     addMovie(card)
       .then((data) => {
         setSavedMovies([...savedMovies, data]);
         setFilteredSavedMovies([...savedMovies, data]);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`Ошибка добавления в сохраненные: ${err}`);
       });
   }
 
-  // Удаление из избранного
+  //  Обработка удаление фильма из коллекции "Сохраненные фильмы"  //
   const handleDeleteMovies = (card) => {
     savedMovies.forEach((i) => {
+      //  Находим в сохраненных карточку с нужным id и ...  //
       if (i.movieId === card.id) {
+        //  Вызываем функцию удаления карточки из сохраненных  //
         deleteSaved(i);
       }
     });
   }
 
-  //  Удаление из избранного  //
+  //  Удаление карточки фильма из сохраненных  //
   const deleteSaved = (card) => {
+    //  Вызываем API-функцию удаления и удаляем из массивов  //
     removeMovie(card._id)
       .then(() => {
         setSavedMovies(savedMovies.filter((i) => i.movieId !== card.movieId));
@@ -298,12 +304,13 @@ const App = () => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`Ошибка удаления из сохраненных: ${err}`);
       });
   }
 
-  //  Обработка избранного - проверка наличия закладки  //
-  const handleBookmark = (card) => {
+  //  Обработка клика по кнопке Like/Dislike - вызываем Добавить или удалить  //
+  //  Это точно нужно упростить при рефакторинге - вынести в API  //
+  const handleLikeSave = (card) => {
     if (!isMovieSaved(card)) {
       handleAddSavedMovies(card);
     } else {
@@ -311,27 +318,31 @@ const App = () => {
     }
   }
 
+  //  Флаг состояния карточки - в сохраненных или нет  //
   const isMovieSaved = (card) => {
     return savedMovies.some((i) => i.movieId === card.id);
   }
-  //  Поиск по фильмам  //
+  //  Функция поиска по фильмам (на рефакторе вынести в API)  //
   const searchMovie = (searchQuery) => {
+    //  Определяем на какой странице идет поиск  //
     const allMoviesPage = location.pathname === '/movies';
     const savedMoviesPage = location.pathname === '/saved-movies';
+    //  Ищем по всему списку (в "Фильмах") или только в сохраненных  //
     const movies = allMoviesPage ? allMovies : savedMovies;
-
+    //  Запускаем заставку загрузки и убираем сообщение об ошибке  //
     setIsLoading(true);
     setApiSearchError({ isApiError: false, apiErrorMessage: '' });
-
+    //  Создаем фильтр поиска по RU-названиям в нижнем регистре  //
     const filter = movies.filter((i) =>
       i.nameRU.toLowerCase().includes(searchQuery.toLowerCase()),
     );
-
+    //  На странице "Сохраненные фильмы"  //
     if (savedMoviesPage) {
       setApiSearchError({
         isApiError: false,
         apiErrorMessage: '',
       });
+      //  Показываем ошибку, если поисковая строка пуста  //
       if (!searchQuery) {
         setApiSearchError({
           isApiError: true,
@@ -341,13 +352,15 @@ const App = () => {
       }
       setFilteredSavedMovies(filter);
     }
-
+    //  На главной странице "Фильмы"  //
     if (allMoviesPage) {
+      //  Если поисковая строка пуста, показываем ошибку  //
       if (!searchQuery) {
         setApiSearchError({
           isApiError: true,
           apiErrorMessage: 'Нужно ввести ключевое слово',
         });
+        //  Если поиск. строка пуста, очищаем лок.хран. и массивы  //
         localStorage.removeItem('searchMovies');
         setFilteredMovies([]);
         setIsLoading(false);
@@ -357,10 +370,12 @@ const App = () => {
         isApiError: false,
         apiErrorMessage: '',
       });
+      //  Если поисковая строка не пуста, применяем поисковый фильтр   //
       setFilteredMovies(filter);
+      //  Сохраняем строку с результатом поиска в лок. хранилище  //
       localStorage.setItem('searchMovies', JSON.stringify(filter));
     }
-
+    //  Если массив результатов поиска по фильтру пуст, выдаем ошибку поиска  //
     if (filter.length === 0) {
       setApiSearchError({
         isApiError: true,
@@ -368,7 +383,6 @@ const App = () => {
       });
       setIsLoading(false);
     }
-
     setIsLoading(false);
   }
 
@@ -389,7 +403,7 @@ const App = () => {
             isLoading={isLoading}
             movies={filteredMovies}
             searchMovie={searchMovie}
-            onSave={handleBookmark}
+            onSave={handleLikeSave}
             isMovieSaved={isMovieSaved}
             setApiSearchError={setApiSearchError}
             apiSearchError={apiSearchError}

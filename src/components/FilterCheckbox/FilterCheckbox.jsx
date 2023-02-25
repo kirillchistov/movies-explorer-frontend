@@ -5,6 +5,8 @@ import React from 'react';
 import './FilterCheckbox.css';
 
 const FilterCheckbox = ({ onIsShortie, isShortie }) => {
+  //  Фильтр: чекбокс + лейбл с фоном + спан с фоном + фикс. текстблок  //
+  //  При включении фильтра меняем состояние, фон #2BE080, фон спана "вкл."  //
   return (
     <div className='search__filter'>
       <input

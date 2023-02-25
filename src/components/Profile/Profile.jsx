@@ -145,8 +145,8 @@ const Profile = ({
             {isEdit ? (
               <button
                 className={
-                  'profile__button profile__button_submit button ' +
-                  (!isSubmitDisabled ? '' : 'link')
+                  'profile__button profile__button_submit ' +
+                  (!isSubmitDisabled ? '' : '')
                 }
                 type='submit'
                 onClick={handleSubmit}
@@ -156,7 +156,7 @@ const Profile = ({
               </button>
             ) : (
               <button
-                className='profile__button link profile__button_edit button'
+                className='profile__button profile__button_edit'
                 type='button'
                 onClick={handleEditProfile}
               >
@@ -165,7 +165,7 @@ const Profile = ({
             )}
 
             <button
-              className='profile__button link profile__button_signout button'
+              className='profile__button profile__button_signout '
               type='button'
               onClick={onLogout}
             >
