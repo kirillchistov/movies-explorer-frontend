@@ -20,23 +20,18 @@ import {
 import './MoviesCardList.css';
 //  import movies from '../../utils/moviesdb';  //
 
-const MoviesCardList = ({
-  onSave,
-  isMovieSaved,
-  deleteSaved,
-  movies,
-  }) => {
+const MoviesCardList = ({ movies, onSave, isMovieSaved, deleteSaved }) => {
 
   const location = useLocation();
 
   //  состояния для вывода карточек в зависимости от размера экрана  //
   const [moviesToShow, setMoviesToShow] = useState(0);
-  const [screen, setScreen] = useState(window.innerWidth);
+  const [screen, setScreenWidth] = useState(window.innerWidth);
 
   //  проверяем путь - куда какой список выводим  //
   const savedMoviesPath = location.pathname === '/saved-movies';
 
-  //  для /movies в зависимости от разрешения выводим карт выводим нужное число карточек  //
+  //  для /movies в зависимости от разрешения выводим нужное число карточек  //
   const countCards = () => {
     if (screen >= LARGESCREEN) {
       setMoviesToShow(DEFAULTONLARGESCREEN);
@@ -52,7 +47,7 @@ const MoviesCardList = ({
   window.onresize = function () {
     setTimeout(() => {
       countCards();
-      setScreen(window.innerWidth);
+      setScreenWidth(window.innerWidth);
     }, 1000);
   };
 
@@ -65,7 +60,6 @@ const MoviesCardList = ({
 
   //  Обрабатываем клик по кнопке "Еще"  //
   //  В зависимости от размера и зума добавляем карточки на страницу  //
-
   const handleClickMore = () => {
     if (screen >= LARGESCREEN) {
       setMoviesToShow(moviesToShow + INCREASEONLARGESCREEN);
@@ -77,6 +71,7 @@ const MoviesCardList = ({
   }
 
   //  В сохраненных выбираем все фильмы, на основной - первые X по калькулятору moviesToShow //
+  //  Ключ для списка карточек берем либо из id локальной карточки, либо из id фильма в API  //
   //  Под списком на главной "Фильмы" выводим кнопку "Еще", если карточек больше moviesToShow  //
   return (
     <section className='movies'>

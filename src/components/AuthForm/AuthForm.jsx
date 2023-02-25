@@ -4,22 +4,14 @@ import { Link } from 'react-router-dom';
 
 import './AuthForm.css';
 
-const AuthForm = ({
-  onChange,
-  onSubmit,
-  isSubmitDisabled,
-  formName,
-  value,
-  error,
-  buttonText,
-  text,
-  link,
-  linkText,
-  apiError,
+const AuthForm = ({ formName, value, error, buttonText,
+  text, link, linkText, apiError,
+    onChange, onSubmit, isSubmitDisabled, }) => {
 
-}) => {
+  //  Декомпозируем объект ошибки на флаг и текст  //
   const { isApiError, apiErrorMessage } = apiError;
 
+  //  Форма авторизации с контекстными подсказками / ошибками  //
   return (
     <main className='auth'>
       <form className='auth__form' name={formName} onSubmit={onSubmit}>
@@ -52,7 +44,6 @@ const AuthForm = ({
               </span>
             </div>
           )}
-
           <div className='auth__item'>
             <span className='auth__caption'>E-mail</span>
             <input
@@ -78,7 +69,6 @@ const AuthForm = ({
               {error.email}
             </span>
           </div>
-
           <div className='auth__item'>
             <span className='auth__caption'>Пароль</span>
             <input
@@ -105,7 +95,6 @@ const AuthForm = ({
             </span>
           </div>
         </div>
-
         <div className='auth__submit'>
           <span
             className={`${

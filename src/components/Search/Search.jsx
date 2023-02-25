@@ -9,6 +9,7 @@ import './Search.css';
 
 const Search = ({ searchMovie, onIsShortie, isShortie }) => {
   const location = useLocation();
+  //  Состояние для поисковой строки  //
   const [searchQuery, setSearchQuery] = useState('');
 
   //  Обнуляем поисковую строку при монтировании компонента  //
@@ -20,7 +21,7 @@ const Search = ({ searchMovie, onIsShortie, isShortie }) => {
 
   //  При нажатии на кнопку поиска, ищем и обновляем запрос в лок.хран.  //
   const handleSubmit = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault();  // отключаем редирект при нажатии
     searchMovie(searchQuery);
     location.pathname === '/movies' && localStorage.setItem('searchQuery', evt.target.search.value);
   }
@@ -30,6 +31,7 @@ const Search = ({ searchMovie, onIsShortie, isShortie }) => {
     setSearchQuery(evt.target.value);
   }
 
+  //  Возвращаем секцию с Формой поиска, Фильтром короткометражек и декоративным блоком  //
   return (
     <section className='search'>
       <SearchForm

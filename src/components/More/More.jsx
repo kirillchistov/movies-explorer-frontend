@@ -7,6 +7,9 @@
 
 import './More.css';
 
+//  Обработка клика по кнопке лежит в MoviesCardList  //
+//  В зависимости от размера и зума при клике добавляем карточки на страницу  //
+//  Если получили больше, чем помещаемся, то кнопка активна  //
 const More = ( {onLoadMore} ) => {
   return (
     <button className='link movies__button' onClick={onLoadMore}>

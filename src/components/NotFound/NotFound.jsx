@@ -8,14 +8,14 @@ const NotFound = () => {
   const history = useHistory();
 
   const goBack = () => {
-    history.go(-1);
+    history.go(-2);
   }
 
   return (
-    <main className='page404'>
-      <h2 className='page404__title'>404</h2>
-      <p className='page404__description'>Страница не найдена</p>
-      <button className='link button page404__back' onClick={goBack}>
+    <main className='notfound'>
+      <h2 className='notfound__title'>404</h2>
+      <p className='notfound__description'>Страница не найдена</p>
+      <button className='notfound__back' onClick={goBack}>
         Назад
       </button>
     </main>

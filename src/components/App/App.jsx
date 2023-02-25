@@ -312,9 +312,9 @@ const App = () => {
   //  Это точно нужно упростить при рефакторинге - вынести в API  //
   const handleLikeSave = (card) => {
     if (!isMovieSaved(card)) {
-      handleAddSavedMovies(card);
+      handleAddSavedMovies(card);  // Если не было лайка, добавляем
     } else {
-      handleDeleteMovies(card);
+      handleDeleteMovies(card);  // Если был лайк, удаляем
     }
   }
 
@@ -330,7 +330,7 @@ const App = () => {
     //  Ищем по всему списку (в "Фильмах") или только в сохраненных  //
     const movies = allMoviesPage ? allMovies : savedMovies;
     //  Запускаем заставку загрузки и убираем сообщение об ошибке  //
-    setIsLoading(true);
+    setIsLoading(true);  // включаем заставку загрузки данных
     setApiSearchError({ isApiError: false, apiErrorMessage: '' });
     //  Создаем фильтр поиска по RU-названиям в нижнем регистре  //
     const filter = movies.filter((i) =>
@@ -386,16 +386,19 @@ const App = () => {
     setIsLoading(false);
   }
 
+  //  Подключаем компоненты в зависимости от контекста и авторизации  //
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='page'>
         <Switch>
+          {/* Главная - О студенте - Войти или Аккаунт */}
           <Route exact path='/'>
             <Header loggedIn={loggedIn} />
             <Main loggedIn={loggedIn} />
             <Footer />
           </Route>
 
+          {/* Только для авторизованных Фильмы */}
           <ProtectedRoute
             component={Movies}
             exact path='/movies'
@@ -409,6 +412,7 @@ const App = () => {
             apiSearchError={apiSearchError}
           />
 
+          {/* Только для авторизованных Сохраненные */}
           <ProtectedRoute
             component={SavedMovies}
             exact path='/saved-movies'
@@ -421,6 +425,7 @@ const App = () => {
             apiSearchError={apiSearchError}
           />
 
+          {/* Только для авторизованных Аккаунт */}
           <ProtectedRoute
             component={Profile}
             exact
@@ -431,6 +436,7 @@ const App = () => {
             apiEditProfileError={apiEditProfileError}
           />
 
+          {/* Авторизация */}
           <Route path='/signin'>
             {loggedIn ? (
               <Redirect to='/movies' />
@@ -442,6 +448,7 @@ const App = () => {
             )}
           </Route>
 
+          {/* Регистрация */}
           <Route path='/signup'>
             {loggedIn ? (
               <Redirect to='/movies' />
@@ -453,6 +460,7 @@ const App = () => {
             )}
           </Route>
 
+          {/* Страница не найдена */}
           <Route>
             <NotFound />
           </Route>

@@ -6,12 +6,7 @@ import useFormWithValidation from '../../hooks/useFormWithValidation';
 import Header from '../Header/Header';
 import './Profile.css';
 
-const Profile = ({
-  loggedIn,
-  onLogout,
-  onUpdateProfile,
-  apiEditProfileError,
-  }) => {
+const Profile = ({ loggedIn, onLogout, onUpdateProfile, apiEditProfileError }) => {
 
   //  Получаем контекст текущего пользователя  //
   const currentUser = useContext(CurrentUserContext);
@@ -21,26 +16,32 @@ const Profile = ({
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   //  Состояние отключения кнопки сохранить  //
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
+  //  Состояние кнопки редактирования профиля  //
   const [isEdit, setIsEdit] = useState(false);
-
+  //  Состояние наличия ошибки API  //
   const [isApiError, setIsApiError] = useState(false);
+  //  Состояние с текстом ошибки API  //
   const [apiErrorMessage, setApiErrorMessage] = useState('');
 
+  //  Обработка перевода профиля в режим редактирования  //
+  //  Заполняем форму данными текущего пользователя, убираем ошибку, включаем инпуты  //
   const handleEditProfile = () => {
-    resetForm(currentUser, {}, false);
-    setIsApiError(false);
-    setApiErrorMessage('');
-    setIsInputDisabled(false);
-    setIsEdit(!isEdit);
+    resetForm(currentUser, {}, false); // newValues, newErrors, newIsValid  //
+    setIsApiError(false);  // Очищаем ошибку
+    setApiErrorMessage('');  // Очищаем тект ошибки
+    setIsInputDisabled(false);  // Включаем поля ввода
+    setIsEdit(!isEdit);  //  Переключаем состояние редактирования
   }
 
+  //  Обработка сохранения изменных данных профиля  //
+  //  Отключаем редирект, очищаем ошибку, отключаем инпуты и кнопку  //
+  //  Сохраняем полученные данные имя и email, вызываем API обновления, очищаем форму  //
   const handleSubmit = (evt) => {
-    evt.preventDefault();
-    setIsApiError(false);
-    setApiErrorMessage('');
-    setIsInputDisabled(true);
-    setIsSubmitDisabled(true);
+    evt.preventDefault();  // Отключаем редирект
+    setIsApiError(false);  // очищаем ошибку
+    setApiErrorMessage('');  // очищаем ошибку
+    setIsInputDisabled(true);  // отключаем инпуты
+    setIsSubmitDisabled(true);  // отключаем кнопку
     const newValues = {
       name: values.name === undefined ? currentUser.name : values.name,
       email: values.email === undefined ? currentUser.email : values.email,
@@ -50,6 +51,7 @@ const Profile = ({
     resetForm(newValues, {}, false);
   }
 
+  //  При монтировании сверяем данные профиля (с текущим) и меняем состояние кнопки сохранить  //
   useEffect(() => {
     setIsSubmitDisabled(
       isValid &&
@@ -58,11 +60,14 @@ const Profile = ({
     );
   }, [values.name, values.email, isValid, currentUser.name, currentUser.email]);
 
+  //  При монтировании компонента устанавливаем состояние и текст ошибки API профиля  //
+  //  Если появилась ошибка, сохраняем ее  //
   useEffect(() => {
     setIsApiError(apiEditProfileError.isApiError);
     setApiErrorMessage(apiEditProfileError.apiErrorMessage);
   }, [apiEditProfileError]);
 
+//  По умолчанию при загрузке убираем ошибку  //
   useEffect(() => {
     setIsApiError(false);
     setApiErrorMessage('');
