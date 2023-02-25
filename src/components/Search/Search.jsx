@@ -9,21 +9,25 @@ import './Search.css';
 
 const Search = ({ searchMovie, onIsShortie, isShortie }) => {
   const location = useLocation();
-  const [searchText, setSearchText] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
+  //  Обнуляем поисковую строку при монтировании компонента  //
+  //  Если мы на странице "Фильмы", то достаем из лок.хран. последний запрос  //
   useEffect(() => {
-    setSearchText('');
-    location.pathname === '/movies' && localStorage.getItem('searchText') && setSearchText(localStorage.getItem('searchText'));
+    setSearchQuery('');
+    location.pathname === '/movies' && localStorage.getItem('searchQuery') && setSearchQuery(localStorage.getItem('searchQuery'));
   }, [location]);
 
+  //  При нажатии на кнопку поиска, ищем и обновляем запрос в лок.хран.  //
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    searchMovie(searchText);
-    location.pathname === '/movies' && localStorage.setItem('searchText', evt.target.search.value);
+    searchMovie(searchQuery);
+    location.pathname === '/movies' && localStorage.setItem('searchQuery', evt.target.search.value);
   }
 
+  //  При вводе поиск. запроса, обновляем рендер значения в поле ввода  //
   const handleChange = (evt) => {
-    setSearchText(evt.target.value);
+    setSearchQuery(evt.target.value);
   }
 
   return (
@@ -31,7 +35,7 @@ const Search = ({ searchMovie, onIsShortie, isShortie }) => {
       <SearchForm
         onSubmit={handleSubmit}
         onChange={handleChange}
-        value={searchText == null ? '' : searchText}
+        value={searchQuery == null ? '' : searchQuery}
       />
       <FilterCheckbox onIsShortie={onIsShortie} isShortie={isShortie} />
       <div className='decoration'> </div>

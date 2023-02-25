@@ -1,61 +1,44 @@
 //  App — корневой компонент приложения, его создаёт CRA  //
 //  Пока отключим линтер про забытые зависимости в хуках  //
 import React, { useEffect, useState } from 'react';
-import {
-  Redirect,
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-} from 'react-router-dom';
+import { useHistory, useLocation, Switch, Route, Redirect } from 'react-router-dom';
 
 //  Импортируем компоненты  //
 import Header from '../Header/Header';
 import Main from '../Main/Main';
-import NotFound from '../NotFound/NotFound';
 import Movies from '../Movies/Movies';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Footer from '../Footer/Footer';
+import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-
 //  Импортируем функции API, утилиты и контекст  //
-//  import auth from '../../utils/auth';
-//  import mainApi from '../../utils/MainApi.js';
-//  import moviesApi from '../../utils/MoviesApi';
-import {
-  editProfile, getSavedMovies, addMovie, removeMovie
-} from '../../utils/MainApi';
+import { editProfile, getSavedMovies, addMovie, removeMovie } from '../../utils/MainApi';
 import {getBeatFilms} from '../../utils/MoviesApi';
-//  import {checkToken, register, login} from '../../utils/auth';  //
 import {authLogin, authRegister, authToken} from '../../utils/auth';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-
+//  Импортируем стили  //
 import './App.css';
 
 const App = () => {
-  //  Хуки для работы с роутингом  //
-  const history = useHistory();
-  const location = useLocation();
-
-  //  Состояние авторизации  //
+  //  Состояние логина  //
   const [loggedIn, setloggedIn] = useState(false);
 
-  //  Состояние с данными пользователя для контекст  //
+  //  Состояние с данными пользователя для контекста  //
   const [currentUser, setCurrentUser] = useState({
     name: 'Kirill',
     email: 'kirill.v.chistov@yandex.ru',
   });
 
-  //  Состояние прелоудера для показа при загрузке данных  //
+  //  Состояние заставки для показа при загрузке данных  //
   const [isLoading, setIsLoading] = useState(true);
 
   //  Состояния для работы со списками фильмов и поиском  //
   //  Вся коллекция  //
   const [allMovies, setAllMovies] = useState([]);
-  //  Коллекция найденных поиском  //
+  //  Коллекция найденных поиском и фильтром //
   const [filteredMovies, setFilteredMovies] = useState([]);
   //  Коллекция всех сохраненных  //
   const [savedMovies, setSavedMovies] = useState([]);
@@ -84,6 +67,10 @@ const App = () => {
     isApiError: false,
     apiErrorMessage: '',
   });
+
+    //  Хуки для работы с роутингом  //
+  const history = useHistory();
+  const location = useLocation();
 
   //  Хуки при визуализаци и обновлении данных компонента  //
   //  При монтировании компонента запускаем обработку токена  //
@@ -296,13 +283,13 @@ const App = () => {
   const handleDeleteMovies = (card) => {
     savedMovies.forEach((i) => {
       if (i.movieId === card.id) {
-        removeSavedMovies(i);
+        deleteSaved(i);
       }
     });
   }
 
   //  Удаление из избранного  //
-  const removeSavedMovies = (card) => {
+  const deleteSaved = (card) => {
     removeMovie(card._id)
       .then(() => {
         setSavedMovies(savedMovies.filter((i) => i.movieId !== card.movieId));
@@ -328,7 +315,7 @@ const App = () => {
     return savedMovies.some((i) => i.movieId === card.id);
   }
   //  Поиск по фильмам  //
-  const searchMovie = (searchText) => {
+  const searchMovie = (searchQuery) => {
     const allMoviesPage = location.pathname === '/movies';
     const savedMoviesPage = location.pathname === '/saved-movies';
     const movies = allMoviesPage ? allMovies : savedMovies;
@@ -337,7 +324,7 @@ const App = () => {
     setApiSearchError({ isApiError: false, apiErrorMessage: '' });
 
     const filter = movies.filter((i) =>
-      i.nameRU.toLowerCase().includes(searchText.toLowerCase()),
+      i.nameRU.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
     if (savedMoviesPage) {
@@ -345,7 +332,7 @@ const App = () => {
         isApiError: false,
         apiErrorMessage: '',
       });
-      if (!searchText) {
+      if (!searchQuery) {
         setApiSearchError({
           isApiError: true,
           apiErrorMessage: 'Нужно ввести ключевое слово',
@@ -356,7 +343,7 @@ const App = () => {
     }
 
     if (allMoviesPage) {
-      if (!searchText) {
+      if (!searchQuery) {
         setApiSearchError({
           isApiError: true,
           apiErrorMessage: 'Нужно ввести ключевое слово',
@@ -410,13 +397,12 @@ const App = () => {
 
           <ProtectedRoute
             component={SavedMovies}
-            exact
-            path='/saved-movies'
+            exact path='/saved-movies'
             loggedIn={loggedIn}
             isLoading={isLoading}
             movies={filteredSavedMovies}
             searchMovie={searchMovie}
-            removeSavedMovies={removeSavedMovies}
+            deleteSaved={deleteSaved}
             setApiSearchError={setApiSearchError}
             apiSearchError={apiSearchError}
           />

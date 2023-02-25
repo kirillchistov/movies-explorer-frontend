@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import Preloader from '../Preloader/Preloader';
 import Search from '../Search/Search';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import Footer from '../Footer/Footer';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { SHORTIE } from '../../utils/constants';
 //  import {getBeatFilms} from '../../utils/MoviesApi';
@@ -42,7 +43,7 @@ const Movies = ({ movies, searchMovie, onSave,
   */
 
   //  Создеаем список для показа по состоянию фильтра - короткометражки или все  //
-  const listMovies = isShortie ?
+  const displayMovies = isShortie ?
     movies.filter((item) => item.duration <= SHORTIE) : movies;
 
   //  При монтировании смотрим, есть ли фильтр в лок.хран., получаем JSON  //
@@ -51,7 +52,6 @@ const Movies = ({ movies, searchMovie, onSave,
       setIsShortie(JSON.parse(localStorage.getItem('shortMovie')));
     }
   }, [location]);
-
 
   /*
   useEffect(() => {
@@ -73,12 +73,12 @@ const Movies = ({ movies, searchMovie, onSave,
       isApiError: false,
       apiErrorMessage: '',
     });
-    listMovies.length === 0 &&
+    displayMovies.length === 0 &&
       setApiSearchError({
         isApiError: true,
         apiErrorMessage: 'Ничего не найдено',
       });
-  }, [isShortie, listMovies.length, setApiSearchError]);
+  }, [isShortie, displayMovies.length, setApiSearchError]);
 
   //  Обработчик переключателя фильтра "Короткометражки"  //
   //  Меняем состояние и значение в локальном хранилилще  //
@@ -91,25 +91,26 @@ const Movies = ({ movies, searchMovie, onSave,
   return (
     <>
       <Header loggedIn={loggedIn} />
-      <main className='content'>
-        <Search
-          onIsShortie={handleShortFilter}
-          isShortie={isShortie}
-          searchMovie={searchMovie}
-        />
-
-        <ErrorMessage apiSearchError={apiSearchError} />
-
-        {isLoading && <Preloader />}
-
-        {!isLoading && (
-          <MoviesCardList
-            onSave={onSave}
-            isMovieSaved={isMovieSaved}
-            movies={listMovies}
+        <main className='content'>
+          <Search
+            onIsShortie={handleShortFilter}
+            isShortie={isShortie}
+            searchMovie={searchMovie}
           />
-        )}
-      </main>
+
+          <ErrorMessage apiSearchError={apiSearchError} />
+
+          {isLoading && <Preloader />}
+
+          {!isLoading && (
+            <MoviesCardList
+              onSave={onSave}
+              isMovieSaved={isMovieSaved}
+              movies={displayMovies}
+            />
+          )}
+        </main>
+      <Footer />
     </>
   );
 }

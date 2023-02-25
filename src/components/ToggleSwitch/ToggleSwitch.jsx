@@ -1,19 +1,19 @@
-//  Компонент переключения  //
+//  Компонент переключения фильтра короткометражек  //
 import './ToggleSwitch.css';
 
-const ToggleSwitch = ({ status, onColor, handleToggleClick, name }) => {
+const ToggleSwitch = ({ handleToggleSwitch, status, onColor, name }) => {
   return (
     <>
       <input
-        checked={status}
-        onChange={handleToggleClick}
         className='search__toggleswitch'
         id={`toggleswitch`}
         type='checkbox'
+        onChange={handleToggleSwitch}
+        checked={status}
       />
       <label
-        style={{ background: status && onColor }}
         className='search__toggleswitch-label'
+        style={{ background: status && onColor }}
         htmlFor={`toggleswitch`}
       >
         <span className={`search__toggleswitch-button`} />
