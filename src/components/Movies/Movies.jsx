@@ -1,80 +1,113 @@
 //   Movies — компонент страницы с поиском по фильмам  //
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import Header from '../Header/Header';
+import Preloader from '../Preloader/Preloader';
+import Search from '../Search/Search';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import Footer from '../Footer/Footer';
+import { SHORTIE } from '../../utils/constants';
+//  import {getBeatFilms} from '../../utils/MoviesApi';
+
 import './Movies.css';
 
-import Header from '../Header/Header';
-import Search from '../Search/Search';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
+const Movies = ({ loggedIn, isLoading, movies, searchMovie, onSave,
+  isMovieSaved, setApiSearchError, apiSearchError }) => {
 
-import Footer from '../Footer/Footer';
-import Preloader from '../Preloader/Preloader';
-
-import { SHORTFILM } from '../../utils/constants';
-
-const Movies = ({
-  onBookmark,
-  onCheckBookmark,
-  setRequestSearchError,
-  requestSearchError,
-  searchMovie,
-  movies,
-  loggedIn,
-  isLoading,
-}) => {
   const location = useLocation();
-  const [isShort, setIsShort] = useState(false);
-  
-  const handleIsShort = () => {
-    setIsShort(!isShort);
-    localStorage.setItem('shortMovie', !isShort);
-  }
+  const [isShortie, setIsShortie] = useState(false);
 
+  //  Подняли стейты в App  //
+  //  Получаем список фильмов через пропсы  //
+  /*
+  const getMovies = () => {
+    setIsLoading(true);
+    getBeatFilms()
+      .then((data) => {
+        setMovies(data);
+      })
+      .catch((err) => {
+        console.log(`Ошибка получения фильмов: ${err}`);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        console.log('загрузка данных завершена');
+      });
+  }
+  */
+
+  //  Создаем список для показа по состоянию фильтра - короткометражки или все  //
+  const displayMovies = isShortie ?
+    movies.filter((item) => item.duration <= SHORTIE) : movies;
+
+  //  При монтировании смотрим, есть ли фильтр в лок.хран., получаем JSON  //
   useEffect(() => {
     if (localStorage.getItem('shortMovie')) {
-      setIsShort(JSON.parse(localStorage.getItem('shortMovie')));
+      setIsShortie(JSON.parse(localStorage.getItem('shortMovie')));
     }
   }, [location]);
 
-  const listMovies = isShort
-    ? movies.filter((item) => item.duration <= SHORTFILM)
-    : movies;
 
+  //  Вынесли функцию поиска по фильмам searchMovie в App  //
+  /*
   useEffect(() => {
-    setRequestSearchError({
-      isRequestError: false,
-      messageRequestError: '',
-    });
-    listMovies.length === 0 &&
-      setRequestSearchError({
-        isRequestError: true,
-        messageRequestError: 'Ничего не найдено',
-      });
-  }, [isShort, listMovies.length, setRequestSearchError]);
+    if (searchMovie) {
+      const allMovies = JSON.parse(localStorage.getItem('movies'));
+      const filterItems = (arr, query) =>
+        arr.filter((movie) => movie.nameRU.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+      const foundMovies = filterItems(allMovies, searchMovie);
+      setMovies([...foundMovies]);
+      const foundShortMovies = foundMovies.filter((movie) => movie.duration <= 40);
+      setShortMovies([...foundShortMovies]);
+    }
+  },[searchMovie])
+  */
 
+  //  При монтировании меняем ошибку поиска на '' или "Ничего не найдено"  //
+  useEffect(() => {
+    setApiSearchError({
+      isApiError: false,
+      apiErrorMessage: '',
+    });
+    displayMovies.length === 0 &&
+      setApiSearchError({
+        isApiError: true,
+        apiErrorMessage: 'Ничего не найдено',
+      });
+  }, [isShortie, displayMovies.length, setApiSearchError]);
+
+  //  Обработчик переключателя фильтра "Короткометражки"  //
+  //  Меняем состояние и значение в локальном хранилилще  //
+  const handleShortFilter = () => {
+    setIsShortie(!isShortie);
+    localStorage.setItem('shortMovie', !isShortie);
+  }
+
+  //  Шапка, Поиск с фильтром, Блок с ошибкой, Результаты поиска, Подвал  //
+  //  На рефакторе можно объединить с "Сохраненными" через HOC //
   return (
     <>
       <Header loggedIn={loggedIn} />
-      <main className='content'>
-        <Search
-          onIsShort={handleIsShort}
-          isShort={isShort}
-          searchMovie={searchMovie}
-        />
-
-        <ErrorMessage requestSearchError={requestSearchError} />
-
-        {isLoading && <Preloader />}
-
-        {!isLoading && (
-          <MoviesCardList
-            onBookmark={onBookmark}
-            onCheckBookmark={onCheckBookmark}
-            movies={listMovies}
+        <main className='content'>
+          <Search
+            onIsShortie={handleShortFilter}
+            isShortie={isShortie}
+            searchMovie={searchMovie}
           />
-        )}
-      </main>
+
+          <ErrorMessage apiSearchError={apiSearchError} />
+
+          {isLoading && <Preloader />}
+
+          {!isLoading && (
+            <MoviesCardList
+              onSave={onSave}
+              isMovieSaved={isMovieSaved}
+              movies={displayMovies}
+            />
+          )}
+        </main>
       <Footer />
     </>
   );

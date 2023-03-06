@@ -1,52 +1,79 @@
-//  Главный API ЛК - авторизация, работа с профилем и коллекцией фильмов  //
-//  Проверка ответа сервера, создание токена, редактирование профиля, коллекции фильмов  //
-
+//  Главный API ЛК - для работы с профилем и коллекцией фильмов  //
+//  Проверка ответа, токен, обновление профиля, добавление и удаление фильмов  //
+//  Переписал на функциональный компонент и async try await  //
 import { BASEURL } from './constants.js';
 
-class MainApi {
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
-  }
-
-  async _checkResponse(res) {
-    if (!res.ok) {
-      return Promise.reject(await res.json());
+export const checkResponse = async (res) => {
+  try {
+    if (res.ok) {
+      return await res.json();
     }
-    return res.json();
+    return Promise.reject({statusCode: res.status, message: res.message});
+  } catch (err) {
+    console.log(`Ошибка запроса к серверу: ${err}`);
   }
+};
 
-  setToken(token) {
-    this._headers = {
+export const getToken = async (token) => {
+  try {
+  return await fetch(`${BASEURL}/users/me`, {
+    method: "GET",
+    headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
+      Authorization: `Bearer ${token}`
+    }
+  }).then(checkResponse)
+  } catch (err) {
+    console.log(`Ошибка получения токена: ${err}`);
   }
+}
 
-  editProfileApi(data) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: 'PATCH',
-      credentials: 'include',
-      headers: this._headers,
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-      }),
-    }).then(this._checkResponse);
+export const editProfile = async (name, email) => {
+  try {
+    const token = localStorage.getItem("jwt");
+    return await fetch(`${BASEURL}/users/me`, {
+      method: "PATCH",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({name, email})
+    })
+      .then(checkResponse)
+  } catch (err) {
+    console.log(`Ошибка обновления профиля: ${err}`);
   }
+}
 
-  getSavedMovies() {
-    return fetch(`${this._baseUrl}/movies`, {
+export const getSavedMovies = async () => {
+  try {
+    const token = localStorage.getItem("jwt");
+    return await fetch(`${BASEURL}/movies`, {
       method: 'GET',
       credentials: 'include',
-      headers: this._headers,
-    }).then(this._checkResponse);
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    }).then(checkResponse);
+  } catch (err) {
+    console.log(`Ошибка получения сохраненных фильмов: ${err}`);
   }
+}
 
-  addMovie(data) {
-    return fetch(`${this._baseUrl}/movies`, {
+export const addMovie = async (data) => {
+  try {
+    const token = localStorage.getItem('jwt');
+    return await fetch(`${BASEURL}/movies`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify({
         country: data.country,
         director: data.director,
@@ -60,22 +87,24 @@ class MainApi {
         nameRU: data.nameRU,
         nameEN: data.nameEN,
       }),
-    }).then(this._checkResponse);
-  }
-
-  removeMovie(movieId) {
-    return fetch(`${this._baseUrl}/movies/${movieId}`, {
-      method: 'DELETE',
-      headers: this._headers,
-    }).then(this._checkResponse);
+    }).then(checkResponse);
+  } catch (err) {
+    console.log(`Ошибка добавления фильма: ${err}`);
   }
 }
 
-const API_CONFIG = {
-  baseUrl: BASEURL,
-  credentials: 'include',
-};
-
-const mainApi = new MainApi(API_CONFIG);
-
-export default mainApi;
+export const removeMovie = async (movieId) => {
+  try {
+    const token = localStorage.getItem('jwt');
+    return await fetch(`${BASEURL}/movies/${movieId}`, {
+      method: 'DELETE',
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    }).then(checkResponse);
+  } catch (err) {
+    console.log(`Ошибка удаления фильма: ${err}`);
+  }
+}

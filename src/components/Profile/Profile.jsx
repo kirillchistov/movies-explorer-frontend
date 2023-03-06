@@ -6,37 +6,42 @@ import useFormWithValidation from '../../hooks/useFormWithValidation';
 import Header from '../Header/Header';
 import './Profile.css';
 
-const Profile = ({
-  loggedIn,
-  onSignOut,
-  onUpdateProfile,
-  requestEditProfileError,
-}) => {
+const Profile = ({ loggedIn, onLogout, onUpdateProfile, apiEditProfileError }) => {
+
+  //  Получаем контекст текущего пользователя  //
   const currentUser = useContext(CurrentUserContext);
+  //  Хук для обработки и валидации формы редактирования  //
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation('');
-
+  //  Состояние отключения поля ввода (вкл. при редактировании)  //
   const [isInputDisabled, setIsInputDisabled] = useState(true);
+  //  Состояние отключения кнопки сохранить  //
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
+  //  Состояние кнопки редактирования профиля  //
   const [isEdit, setIsEdit] = useState(false);
+  //  Состояние наличия ошибки API  //
+  const [isApiError, setIsApiError] = useState(false);
+  //  Состояние с текстом ошибки API  //
+  const [apiErrorMessage, setApiErrorMessage] = useState('');
 
-  const [isRequestError, setIsRequestError] = useState(false);
-  const [messageRequestError, setMesageRequestError] = useState('');
-
+  //  Обработка перевода профиля в режим редактирования  //
+  //  Заполняем форму данными текущего пользователя, убираем ошибку, включаем инпуты  //
   const handleEditProfile = () => {
-    resetForm(currentUser, {}, false);
-    setIsRequestError(false);
-    setMesageRequestError('');
-    setIsInputDisabled(false);
-    setIsEdit(!isEdit);
+    resetForm(currentUser, {}, false); // newValues, newErrors, newIsValid  //
+    setIsApiError(false);  // Очищаем ошибку
+    setApiErrorMessage('');  // Очищаем тект ошибки
+    setIsInputDisabled(false);  // Включаем поля ввода
+    setIsEdit(!isEdit);  //  Переключаем состояние редактирования
   }
 
+  //  Обработка сохранения изменных данных профиля  //
+  //  Отключаем редирект, очищаем ошибку, отключаем инпуты и кнопку  //
+  //  Сохраняем полученные данные имя и email, вызываем API обновления, очищаем форму  //
   const handleSubmit = (evt) => {
-    evt.preventDefault();
-    setIsRequestError(false);
-    setMesageRequestError('');
-    setIsInputDisabled(true);
-    setIsSubmitDisabled(true);
+    evt.preventDefault();  // Отключаем редирект
+    setIsApiError(false);  // очищаем ошибку
+    setApiErrorMessage('');  // очищаем ошибку
+    setIsInputDisabled(true);  // отключаем инпуты
+    setIsSubmitDisabled(true);  // отключаем кнопку
     const newValues = {
       name: values.name === undefined ? currentUser.name : values.name,
       email: values.email === undefined ? currentUser.email : values.email,
@@ -46,6 +51,7 @@ const Profile = ({
     resetForm(newValues, {}, false);
   }
 
+  //  При монтировании сверяем данные профиля (с текущим) и меняем состояние кнопки сохранить  //
   useEffect(() => {
     setIsSubmitDisabled(
       isValid &&
@@ -54,14 +60,17 @@ const Profile = ({
     );
   }, [values.name, values.email, isValid, currentUser.name, currentUser.email]);
 
+  //  При монтировании компонента устанавливаем состояние и текст ошибки API профиля  //
+  //  Если появилась ошибка, сохраняем ее  //
   useEffect(() => {
-    setIsRequestError(requestEditProfileError.isRequestError);
-    setMesageRequestError(requestEditProfileError.messageRequestError);
-  }, [requestEditProfileError]);
+    setIsApiError(apiEditProfileError.isApiError);
+    setApiErrorMessage(apiEditProfileError.apiErrorMessage);
+  }, [apiEditProfileError]);
 
+//  По умолчанию при загрузке убираем ошибку  //
   useEffect(() => {
-    setIsRequestError(false);
-    setMesageRequestError('');
+    setIsApiError(false);
+    setApiErrorMessage('');
   }, []);
 
   return (
@@ -131,18 +140,18 @@ const Profile = ({
           <div className='profile__submit'>
             <span
               className={`${
-                isRequestError
+                isApiError
                   ? 'profile__error profile__error_active'
                   : 'profile__error'
               }`}
             >
-              {messageRequestError}
+              {apiErrorMessage}
             </span>
             {isEdit ? (
               <button
                 className={
-                  'profile__button profile__button_submit button ' +
-                  (!isSubmitDisabled ? '' : 'link')
+                  'profile__button profile__button_submit ' +
+                  (!isSubmitDisabled ? '' : '')
                 }
                 type='submit'
                 onClick={handleSubmit}
@@ -152,7 +161,7 @@ const Profile = ({
               </button>
             ) : (
               <button
-                className='profile__button link profile__button_edit button'
+                className='profile__button profile__button_edit'
                 type='button'
                 onClick={handleEditProfile}
               >
@@ -161,9 +170,9 @@ const Profile = ({
             )}
 
             <button
-              className='profile__button link profile__button_signout button'
+              className='profile__button profile__button_signout '
               type='button'
-              onClick={onSignOut}
+              onClick={onLogout}
             >
               Выйти из аккаунта
             </button>

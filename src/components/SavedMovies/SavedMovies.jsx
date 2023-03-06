@@ -1,64 +1,60 @@
 //  Компонент с галереей сохраненных фильмов  //
-//  Применяем фильтр по короткометражкам isShort //
+//  Применяем фильтр по короткометражкам isShortie //
 
-import React, { useEffect, useState } from 'react';
-import './SavedMovies.css';
-
+import React, {useState, useEffect} from 'react';
 import Header from '../Header/Header';
 import Search from '../Search/Search';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Footer from '../Footer/Footer';
-
-import { SHORTFILM } from '../../utils/constants';
+//  import saved from '../../utils/saved';  //
+import { SHORTIE } from '../../utils/constants';
+import './SavedMovies.css';
 
 const SavedMovies = ({
-  requestSearchError,
-  searchMovie,
-  setRequestSearchError,
-  removeSavedMovies,
-  movies,
-  loggedIn,
-}) => {
-  const [isShort, setIsShort] = useState(false);
+  loggedIn, movies, deleteSaved, searchMovie,
+  apiSearchError, setApiSearchError }) => {
 
-  const handleIsShort = () => {
-    setIsShort(!isShort);
+  //  Состояние для фильтра короткометражек  //
+  const [isShortie, setIsShortie] = useState(false);
+
+  //  Список для показа по состоянию фильтра - короткометражки или все  //
+  const displayMovies = isShortie ?
+    movies.filter((item) => item.duration <= SHORTIE) : movies;
+
+  //  При монтировании убираем или показываем сообщение об ошибке поиска   //
+  useEffect(() => {
+    setApiSearchError({
+      isApiError: false,
+      apiErrorMessage: '',
+    });
+    displayMovies.length === 0 &&
+      setApiSearchError({
+        isApiError: true,
+        apiErrorMessage: 'Ничего не найдено',
+      });
+  }, [isShortie, displayMovies.length, setApiSearchError]);
+
+  //  Обработчик переключателя фильтра "Короткометражки"  //
+  //  Меняем состояние и значение в локальном хранилилще  //
+  const handleShortFilter = () => {
+    setIsShortie(!isShortie);
+    localStorage.setItem('shortMovie', !isShortie);
   }
 
-  const listMovies = isShort
-    ? movies.filter((item) => item.duration <= SHORTFILM)
-    : movies;
-
-  useEffect(() => {
-    setRequestSearchError({
-      isRequestError: false,
-      messageRequestError: '',
-    });
-    listMovies.length === 0 &&
-      setRequestSearchError({
-        isRequestError: true,
-        messageRequestError: 'Ничего не найдено',
-      });
-  }, [isShort, listMovies.length, setRequestSearchError]);
-
+  //  Шапка, Поиск с фильтром, Блок с ошибкой, Результаты поиска, Подвал  //
   return (
     <>
       <Header loggedIn={loggedIn} />
-      <main className='content'>
-        <Search
-          onIsShort={handleIsShort}
-          isShort={isShort}
-          searchMovie={searchMovie}
-        />
-
-        <ErrorMessage requestSearchError={requestSearchError} />
-
-        <MoviesCardList
-          movies={listMovies}
-          removeSavedMovies={removeSavedMovies}
-        />
-      </main>
+        <main className='content'>
+          <Search
+            onIsShortie={handleShortFilter}
+            isShortie={isShortie}
+            searchMovie={searchMovie}
+          />
+          <ErrorMessage apiSearchError={apiSearchError} />
+          <MoviesCardList movies={displayMovies} deleteSaved={deleteSaved} />
+        </main>
       <Footer />
     </>
   );
