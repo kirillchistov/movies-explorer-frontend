@@ -4,6 +4,8 @@
 # Автор
 * [Кирилл Чистов](https://github.com/kirillchistov), студент веб-факультета "Практикум" (когорта 50_tomato)
 
+<img src="https://github.com/PeachMood/movies-explorer-frontend/raw/main/src/assets/images/project.png" height="400" alt="Скриншот главной страницы">
+
 # Стек технологий
 * [x] HTML, CSS (БЭМ Flat, адаптив Flex + Grid)
 * [x] JavaScript (ES6, React)
