@@ -479,6 +479,14 @@ const App = () => {
             apiEditProfileError={apiEditProfileError}
           />
 
+          <Route path='/login'>
+            <Redirect to='/signin' />
+          </Route>
+
+          <Route path='/register'>
+            <Redirect to='/signup' />
+          </Route>
+
           {/* Авторизация */}
           <Route path='/signin'>
             {loggedIn ? (

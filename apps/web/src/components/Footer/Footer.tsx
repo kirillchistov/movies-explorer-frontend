@@ -8,7 +8,7 @@ const Footer = () => {
         Учебный проект Яндекс.Практикум х BeatFilm.
       </h3>
       <div className='footer__description'>
-        <p className='footer__copyright'>&copy;2022-2023</p>
+        <p className='footer__copyright'>&copy;2022-2026</p>
         <ul className='footer__list'>
           <li>
             <a
@@ -23,7 +23,7 @@ const Footer = () => {
           <li>
             <a
               className='link'
-              href='https://github.com'
+              href='https://github.com/kirillchistov/movies-explorer-full'
               target='_blank'
               rel='noreferrer'
             >
