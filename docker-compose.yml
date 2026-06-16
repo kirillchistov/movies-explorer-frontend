@@ -1,0 +1,40 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3003
+      MONGO_DB_URL: mongodb://mongo:27017/bitfilmsdb
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+    depends_on:
+      - mongo
+    ports:
+      - "3003:3003"
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_API_BASE_URL: /api
+        VITE_MOVIES_API_URL: https://api.nomoreparties.co/beatfilm-movies
+        VITE_PUBLIC_BASE: /
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  mongo-data:
