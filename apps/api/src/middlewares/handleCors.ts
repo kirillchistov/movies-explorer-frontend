@@ -17,6 +17,7 @@ const allowedCors = [
   'localhost:8080',
   'http://localhost:8080',
   'https://localhost:8080',
+  'https://kirillchistov.github.io',
 ];
 
 // eslint-disable-next-line consistent-return

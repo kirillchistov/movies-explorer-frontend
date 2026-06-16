@@ -33,8 +33,8 @@ jobs:
 
       - name: Build web app
         env:
-          VITE_PUBLIC_BASE: /movies-explorer-frontend/
-          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://api.christoff.nomoredomains.club' }}
+          VITE_PUBLIC_BASE: /${{ github.event.repository.name }}/
+          VITE_USE_MOCK_API: true
           VITE_MOVIES_API_URL: https://api.nomoreparties.co/beatfilm-movies
         run: |
           npm run build --workspace packages/shared

@@ -1,5 +1,6 @@
 //  Модуль авторизации  //
-import { BASEURL } from './constants';
+import { BASEURL, USE_MOCK_API } from './constants';
+import { mockLogin, mockRegister, mockToken } from './mockApi';
 /* Перепишем на функции */
 
 //  Вместо локального метода делаем функцию проверки ответа сервера  //
@@ -33,6 +34,10 @@ const handleNetworkError = (err) => {
 //  Функция с пост-запросом на создание регистрации  //
 //  потом сделаем async try await  //
 export const authRegister = async ({email, password, name}) => {
+  if (USE_MOCK_API) {
+    return mockRegister({ email, password, name });
+  }
+
   const user = await fetch(`${BASEURL}/signup`, {
     method: "POST",
     headers: {
@@ -47,6 +52,10 @@ export const authRegister = async ({email, password, name}) => {
 //  потом сделаем async try await  //
 
 export const authLogin = async ({email, password}) => {
+  if (USE_MOCK_API) {
+    return mockLogin({ email, password });
+  }
+
   return await fetch(`${BASEURL}/signin`, {
       method: 'POST',
 //      credentials: 'include',  //
@@ -60,6 +69,10 @@ export const authLogin = async ({email, password}) => {
 };
 
 export const authToken = async (token) => {
+  if (USE_MOCK_API) {
+    return mockToken(token);
+  }
+
   return await fetch(`${BASEURL}/users/me`, {
       method: 'GET',
       credentials: 'include',

@@ -1,7 +1,14 @@
 //  Главный API ЛК - для работы с профилем и коллекцией фильмов  //
 //  Проверка ответа, токен, обновление профиля, добавление и удаление фильмов  //
 //  Переписал на функциональный компонент и async try await  //
-import { BASEURL } from './constants';
+import { BASEURL, USE_MOCK_API } from './constants';
+import {
+  mockAddMovie,
+  mockEditProfile,
+  mockGetSavedMovies,
+  mockRemoveMovie,
+  mockToken,
+} from './mockApi';
 import type { UpdateProfilePayload } from '@movies-explorer/shared';
 
 export const checkResponse = async (res) => {
@@ -16,6 +23,10 @@ export const checkResponse = async (res) => {
 };
 
 export const getToken = async (token) => {
+  if (USE_MOCK_API) {
+    return mockToken(token);
+  }
+
   try {
   return await fetch(`${BASEURL}/users/me`, {
     method: "GET",
@@ -31,6 +42,10 @@ export const getToken = async (token) => {
 }
 
 export const editProfile = async ({ name, email }: UpdateProfilePayload) => {
+  if (USE_MOCK_API) {
+    return mockEditProfile({ name, email });
+  }
+
   try {
     const token = localStorage.getItem("jwt");
     return await fetch(`${BASEURL}/users/me`, {
@@ -49,6 +64,10 @@ export const editProfile = async ({ name, email }: UpdateProfilePayload) => {
 }
 
 export const getSavedMovies = async () => {
+  if (USE_MOCK_API) {
+    return mockGetSavedMovies();
+  }
+
   try {
     const token = localStorage.getItem("jwt");
     return await fetch(`${BASEURL}/movies`, {
@@ -66,6 +85,10 @@ export const getSavedMovies = async () => {
 }
 
 export const addMovie = async (data) => {
+  if (USE_MOCK_API) {
+    return mockAddMovie(data);
+  }
+
   try {
     const token = localStorage.getItem('jwt');
     return await fetch(`${BASEURL}/movies`, {
@@ -95,6 +118,10 @@ export const addMovie = async (data) => {
 }
 
 export const removeMovie = async (movieId) => {
+  if (USE_MOCK_API) {
+    return mockRemoveMovie(movieId);
+  }
+
   try {
     const token = localStorage.getItem('jwt');
     return await fetch(`${BASEURL}/movies/${movieId}`, {

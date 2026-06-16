@@ -1,5 +1,6 @@
 const BASEURL = import.meta.env.VITE_API_BASE_URL
-  || (import.meta.env.DEV ? '/api' : 'https://api.christoff.nomoredomains.club');
+  || (import.meta.env.DEV ? '/api' : '');
+const USE_MOCK_API = import.meta.env.VITE_USE_MOCK_API === 'true';
 const MOVIESURL = import.meta.env.VITE_MOVIES_API_URL || 'https://api.nomoreparties.co/beatfilm-movies';
 const BASEMOVIE = 'https://api.nomoreparties.co/';
 
@@ -37,6 +38,7 @@ const INCREASEONSMALLSCREEN = 2;
 
 export {
   BASEURL,
+  USE_MOCK_API,
   MOVIESURL,
   BASEMOVIE,
   SHORTIE,

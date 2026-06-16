@@ -257,7 +257,11 @@ const App = () => {
   //  Обработка выхода из аккаунта  //
   //  Очищаем авторизацию, лок. хранилище и контекст юзера, открываем главную  //
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('allMovies');
+    localStorage.removeItem('searchMovies');
+    localStorage.removeItem('searchQuery');
+    localStorage.removeItem('shortMovie');
     setloggedIn(false);
     setAllMovies([]);
     setSavedMovies([]);
